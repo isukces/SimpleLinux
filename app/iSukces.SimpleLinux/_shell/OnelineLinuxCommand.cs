@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace iSukces.SimpleLinux
 {
-    public abstract class OnelineLinuxCommand : LinuxCommand
+    public abstract class OnelineLinuxCommand : LinuxCommand, ICommandsPartsProvider
     {
         public override string GetCode()
         {
@@ -13,6 +13,6 @@ namespace iSukces.SimpleLinux
             return string.Join(" ", l);
         }
 
-        protected abstract IEnumerable<string> GetItems();
+        public abstract IEnumerable<string> GetItems();
     }
 }

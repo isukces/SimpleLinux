@@ -6,7 +6,7 @@ namespace iSukces.SimpleLinux
 {
     public class RemoveCommand : OnelineLinuxCommand
     {
-        protected override IEnumerable<string> GetItems()
+        public override IEnumerable<string> GetItems()
         {
             yield return "rm";
             var flags = GetFlags();

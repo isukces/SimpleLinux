@@ -13,7 +13,7 @@ namespace iSukces.SimpleLinux
             Url = url;
         }
 
-        protected override IEnumerable<string> GetItems()
+        public override IEnumerable<string> GetItems()
         {
             yield return "curl";
             if (Silent)

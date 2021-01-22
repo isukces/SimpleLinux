@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="iSukces.Code" Version="1.0.21012.168" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\iSukces.SimpleLinux\iSukces.SimpleLinux.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Generators\OptionsCollectionValue.cs">
+        <DependentUpon>OptionsCollection.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Generators\SingleTaskEnumsGenerator.cs">
+        <DependentUpon>EnumsGenerator.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>
