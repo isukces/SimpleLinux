@@ -61,8 +61,10 @@ namespace iSukces.SimpleLinux.AutoCode
             var item = enumsGenerator
                 .WithEnum("Docker.DockerComposeCommon", optionsToParse)
                 .WithStringValue("--file", "alternate compose file")
-                // --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
                 .WithEnumValue("--log-level", "DEBUG, INFO, WARNING, ERROR, CRITICAL".Split(","))
+                .WithStringValue("--tlscacert", "Trust certs signed only by this CA")
+                .WithStringValue("--tlscert", "Path to TLS certificate file")
+                .WithStringValue("--tlskey", "Path to TLS key file")
                 .WithStringValue("--project-name", "alternate project name")
                 .WithStringValue("--host", "daemon socket to connect to")
                 .WithStringValue("--project-directory", "alternate working directory");

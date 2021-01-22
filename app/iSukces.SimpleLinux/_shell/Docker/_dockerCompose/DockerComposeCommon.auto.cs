@@ -44,16 +44,16 @@ namespace iSukces.SimpleLinux.Docker
                 return current & ~value;
         }
 
-        public static string ToLinuxValue(this LogLevelValues value)
+        public static string ToLinuxValue(this DockerComposeCommonLogLevelValues value)
         {
             // generator : ShellEnumOptionsGenerator.MakeExtensionMethod:35
             switch (value)
             {
-                case LogLevelValues.Debug: return "DEBUG";
-                case LogLevelValues.Info: return "INFO";
-                case LogLevelValues.Warning: return "WARNING";
-                case LogLevelValues.Error: return "ERROR";
-                case LogLevelValues.Critical: return "CRITICAL";
+                case DockerComposeCommonLogLevelValues.Debug: return "DEBUG";
+                case DockerComposeCommonLogLevelValues.Info: return "INFO";
+                case DockerComposeCommonLogLevelValues.Warning: return "WARNING";
+                case DockerComposeCommonLogLevelValues.Error: return "ERROR";
+                case DockerComposeCommonLogLevelValues.Critical: return "CRITICAL";
                 default: throw new NotSupportedException();
             }
         }
@@ -109,6 +109,24 @@ namespace iSukces.SimpleLinux.Docker
                 yield return "--host";
                 yield return Host;
             }
+            // --tlscacert =CA_PATH: Trust certs signed only by this CA
+            if (!string.IsNullOrEmpty(Tlscacert))
+            {
+                yield return "--tlscacert";
+                yield return Tlscacert;
+            }
+            // --tlscert =CLIENT_CERT_PATH: Path to TLS certificate file
+            if (!string.IsNullOrEmpty(Tlscert))
+            {
+                yield return "--tlscert";
+                yield return Tlscert;
+            }
+            // --tlskey =TLS_KEY_PATH: Path to TLS key file
+            if (!string.IsNullOrEmpty(Tlskey))
+            {
+                yield return "--tlskey";
+                yield return Tlskey;
+            }
             // --project-directory =PATH: Specify an alternate working directory (default: the path of the Compose file)
             if (!string.IsNullOrEmpty(ProjectDirectory))
             {
@@ -124,6 +142,7 @@ namespace iSukces.SimpleLinux.Docker
 
         public DockerComposeCommonOptions WithCompatibility(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeCommonFlags.Compatibility, value);
             return this;
         }
@@ -134,6 +153,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="file">alternate compose file</param>
         public DockerComposeCommonOptions WithFile(string file)
         {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
             File = file;
             return this;
         }
@@ -144,6 +164,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="host">daemon socket to connect to</param>
         public DockerComposeCommonOptions WithHost(string host)
         {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
             Host = host;
             return this;
         }
@@ -152,14 +173,16 @@ namespace iSukces.SimpleLinux.Docker
         /// --log-level =LEVEL: Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         /// </summary>
         /// <param name="level"></param>
-        public DockerComposeCommonOptions WithLogLevel(LogLevelValues level)
+        public DockerComposeCommonOptions WithLogLevel(DockerComposeCommonLogLevelValues level)
         {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
             LogLevel = level;
             return this;
         }
 
         public DockerComposeCommonOptions WithNoAnsi(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeCommonFlags.NoAnsi, value);
             return this;
         }
@@ -170,6 +193,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="path">alternate working directory</param>
         public DockerComposeCommonOptions WithProjectDirectory(string path)
         {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
             ProjectDirectory = path;
             return this;
         }
@@ -180,36 +204,75 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="name">alternate project name</param>
         public DockerComposeCommonOptions WithProjectName(string name)
         {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
             ProjectName = name;
             return this;
         }
 
         public DockerComposeCommonOptions WithSkipHostnameCheck(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeCommonFlags.SkipHostnameCheck, value);
             return this;
         }
 
         public DockerComposeCommonOptions WithTls(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeCommonFlags.Tls, value);
+            return this;
+        }
+
+        /// <summary>
+        /// --tlscacert =CA_PATH: Trust certs signed only by this CA
+        /// </summary>
+        /// <param name="caPath">Trust certs signed only by this CA</param>
+        public DockerComposeCommonOptions WithTlscacert(string caPath)
+        {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            Tlscacert = caPath;
+            return this;
+        }
+
+        /// <summary>
+        /// --tlscert =CLIENT_CERT_PATH: Path to TLS certificate file
+        /// </summary>
+        /// <param name="clientCertPath">Path to TLS certificate file</param>
+        public DockerComposeCommonOptions WithTlscert(string clientCertPath)
+        {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            Tlscert = clientCertPath;
+            return this;
+        }
+
+        /// <summary>
+        /// --tlskey =TLS_KEY_PATH: Path to TLS key file
+        /// </summary>
+        /// <param name="tlsKeyPath">Path to TLS key file</param>
+        public DockerComposeCommonOptions WithTlskey(string tlsKeyPath)
+        {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            Tlskey = tlsKeyPath;
             return this;
         }
 
         public DockerComposeCommonOptions WithTlsverify(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeCommonFlags.Tlsverify, value);
             return this;
         }
 
         public DockerComposeCommonOptions WithVerbose(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeCommonFlags.Verbose, value);
             return this;
         }
 
         public DockerComposeCommonOptions WithVersion(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeCommonFlags.Version, value);
             return this;
         }
@@ -229,12 +292,27 @@ namespace iSukces.SimpleLinux.Docker
         /// <summary>
         /// --log-level =LEVEL: Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         /// </summary>
-        public LogLevelValues? LogLevel { get; set; }
+        public DockerComposeCommonLogLevelValues? LogLevel { get; set; }
 
         /// <summary>
         /// -H, --host =HOST: Daemon socket to connect to
         /// </summary>
         public string Host { get; set; }
+
+        /// <summary>
+        /// --tlscacert =CA_PATH: Trust certs signed only by this CA
+        /// </summary>
+        public string Tlscacert { get; set; }
+
+        /// <summary>
+        /// --tlscert =CLIENT_CERT_PATH: Path to TLS certificate file
+        /// </summary>
+        public string Tlscert { get; set; }
+
+        /// <summary>
+        /// --tlskey =TLS_KEY_PATH: Path to TLS key file
+        /// </summary>
+        public string Tlskey { get; set; }
 
         /// <summary>
         /// --project-directory =PATH: Specify an alternate working directory (default: the path of the Compose file)
@@ -256,7 +334,7 @@ namespace iSukces.SimpleLinux.Docker
         Compatibility = 64
     }
 
-    public enum LogLevelValues
+    public enum DockerComposeCommonLogLevelValues
     {
         Debug,
         Info,

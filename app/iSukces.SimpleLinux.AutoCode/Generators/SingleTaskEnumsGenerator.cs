@@ -6,11 +6,6 @@ using iSukces.Code.Interfaces;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
 {
-    internal interface ISingleTaskEnumsGeneratorContext
-    {
-        CsNamespace GetOrCreateNamespace(string itemNamespace);
-    }
-
     internal class SingleTaskEnumsGenerator
     {
         private SingleTaskEnumsGenerator(ISingleTaskEnumsGeneratorContext context, EnumsGeneratorItem item)
@@ -197,7 +192,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                     ? ParametrizedOption.OptionValueProcessorKind.SingleValue
                     : ParametrizedOption.OptionValueProcessorKind.Dictionary;
 
-                var cre = new ShellEnumOptionsGenerator(option.GetCsName() + "Values", MyNamespace,
+                var cre = new ShellEnumOptionsGenerator(_item.EnumName+option.GetCsName() + "Values", MyNamespace,
                     p.Encoder?.EnumValues);
                 cre.MakeEnumIfNecessary();
                 cre.MakeExtensionMethod(ExtensionsClass);
@@ -212,12 +207,12 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
                 {
                     var key           = p.Name?.ToLower();
-                    var value         = p.Value.ToLower();
+                    var value         = p.Value.Camelise(true).FirstLower();
                     var setExpression = prop.Name;
                     if (kind == ParametrizedOption.OptionValueProcessorKind.Dictionary)
                         setExpression += "[" + key + "]";
 
-                    var cs = new CsCodeWriter()
+                    var cs = CsCodeWriter.Create<SingleTaskEnumsGenerator>()
                         .WriteLine($"{setExpression} = {value};")
                         .WriteLine("return this;");
                     var fluentMethod = str.AddMethod("With" + prop.Name, str.Name)
@@ -261,7 +256,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                                 var ex = prop.Name;
                                 if (prop.Type.EndsWith("?"))
                                     ex += ".Value";
-                                var input = new ParametrizedOption.OptionValueProcessorInput(ex, kind, resolver);
+                                var input      = new ParametrizedOption.OptionValueProcessorInput(ex, kind, resolver);
                                 var expression = p.Encoder.Convert(input);
                                 cc.WriteLine($"yield return {expression};");
                             }
@@ -336,7 +331,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
             {
                 var mask = GetMask(MyEnum, enumItem.EnumName);
-                var cw   = new CsCodeWriter();
+                var cw   = CsCodeWriter.Create<SingleTaskEnumsGenerator>();
                 cw.WriteLine($"Options = Options.{SetOrClearMethod}({mask}, value);");
                 cw.WriteLine("return this;");
                 var m = MyStruct.AddMethod("With" + enumItem.EnumName, MyStructName).WithBody(cw);

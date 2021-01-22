@@ -80,42 +80,49 @@ namespace iSukces.SimpleLinux.Docker
 
         public DockerComposeBuildOptions WithCompress(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeBuildFlags.Compress, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithForceRm(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeBuildFlags.ForceRm, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithNoCache(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeBuildFlags.NoCache, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithNoRm(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeBuildFlags.NoRm, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithParallel(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeBuildFlags.Parallel, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithPull(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeBuildFlags.Pull, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithQuiet(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeBuildFlags.Quiet, value);
             return this;
         }

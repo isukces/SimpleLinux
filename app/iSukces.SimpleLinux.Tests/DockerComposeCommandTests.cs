@@ -65,7 +65,7 @@ namespace iSukces.SimpleLinux.Tests
                 Option = new DockerComposeUpOptions()
                     .WithDetach(),
                 Common = new DockerComposeCommonOptions()
-                    .WithLogLevel(LogLevelValues.Debug)
+                    .WithLogLevel(DockerComposeCommonLogLevelValues.Debug)
             };
             
             var          actual   = cmd.GetCode();

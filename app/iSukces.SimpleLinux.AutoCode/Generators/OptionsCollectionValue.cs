@@ -8,8 +8,12 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
     {
         public string GetCsName()
         {
+            var candidate = Parameter?.OtherName?.Camelise();
+            if (!string.IsNullOrEmpty(candidate))
+                return candidate;
             var name = string.IsNullOrEmpty(LongOption) ? ShortOption : LongOption;
-            return name.Camelise();
+            name= name.Camelise();
+            return name ;
         }
 
         public bool Match(string option)
@@ -42,8 +46,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             if (parts.Length > 2) throw new NotSupportedException();
 
             Parameter = parts.Length > 1 
-                ? new ParametrizedOption(parts[1].Trim(), parts[0].Trim()) 
-                : new ParametrizedOption(parts[0].Trim());
+                ? new ParametrizedOption(null, parts[1].Trim(), name: parts[0].Trim()) 
+                : new ParametrizedOption(null, parts[0].Trim());
             
         }
 

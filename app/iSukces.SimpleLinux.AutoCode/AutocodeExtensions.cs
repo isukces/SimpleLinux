@@ -31,7 +31,7 @@ namespace iSukces.SimpleLinux.AutoCode
             var sb    = new StringBuilder(x.Length);
             foreach (var i in x)
             {
-                if (i == ' ' || i == '-')
+                if (i == ' ' || i == '-'|| i == '_')
                 {
                     upper = true;
                     continue;

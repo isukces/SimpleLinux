@@ -158,30 +158,35 @@ namespace iSukces.SimpleLinux.Docker
 
         public DockerComposeUpOptions WithAbortOnContainerExit(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.AbortOnContainerExit, value);
             return this;
         }
 
         public DockerComposeUpOptions WithAlwaysRecreateDeps(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.AlwaysRecreateDeps, value);
             return this;
         }
 
         public DockerComposeUpOptions WithAttachDependencies(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.AttachDependencies, value);
             return this;
         }
 
         public DockerComposeUpOptions WithBuild(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.Build, value);
             return this;
         }
 
         public DockerComposeUpOptions WithDetach(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.Detach, value);
             return this;
         }
@@ -192,60 +197,70 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="service">service name</param>
         public DockerComposeUpOptions WithExitCodeFrom(string service)
         {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
             ExitCodeFrom = service;
             return this;
         }
 
         public DockerComposeUpOptions WithForceRecreate(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.ForceRecreate, value);
             return this;
         }
 
         public DockerComposeUpOptions WithNoBuild(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.NoBuild, value);
             return this;
         }
 
         public DockerComposeUpOptions WithNoColor(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.NoColor, value);
             return this;
         }
 
         public DockerComposeUpOptions WithNoDeps(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.NoDeps, value);
             return this;
         }
 
         public DockerComposeUpOptions WithNoRecreate(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.NoRecreate, value);
             return this;
         }
 
         public DockerComposeUpOptions WithNoStart(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.NoStart, value);
             return this;
         }
 
         public DockerComposeUpOptions WithQuietPull(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.QuietPull, value);
             return this;
         }
 
         public DockerComposeUpOptions WithRemoveOrphans(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.RemoveOrphans, value);
             return this;
         }
 
         public DockerComposeUpOptions WithRenewAnonVolumes(bool value = true)
         {
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
             Options = Options.SetOrClear(DockerComposeUpFlags.RenewAnonVolumes, value);
             return this;
         }
@@ -257,6 +272,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="num"></param>
         public DockerComposeUpOptions WithScale(string service, int num)
         {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
             Scale[service] = num;
             return this;
         }
@@ -267,6 +283,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="timeout">timeout in seconds</param>
         public DockerComposeUpOptions WithTimeout(int timeout)
         {
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
             Timeout = timeout;
             return this;
         }
