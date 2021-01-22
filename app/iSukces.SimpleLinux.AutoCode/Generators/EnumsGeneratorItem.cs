@@ -86,5 +86,12 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         public IList<Type> ImplementedInterfaces { get; } = new List<Type>();
 
         public IFilenameMaker FilenameMaker { get; set; }
+
+        public EnumsGeneratorItem WithInteger(string option)
+        {
+            var el = Options.GetByOption(option);
+            el.Parameter     = el.Parameter.WithEncoder(OptionValueProcessor.Integer);
+            return this;
+        }
     }
 }

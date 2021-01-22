@@ -4,20 +4,21 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 {
     public class OptionsCollectionValue
     {
-        public string GetEnumValueCode()
+        public string GetCsName()
         {
             var name = string.IsNullOrEmpty(LongOption) ? ShortOption : LongOption;
             return name.Camelise();
         }
 
+        public bool Match(string option)
+        {
+            return option == LongOptionWithMinus || option == ShortOptionWithMinus;
+        }
+
         public override string ToString()
         {
             var toString = ShortOptionWithMinus.Append(LongOptionWithMinus, ", ");
-            if (string.IsNullOrEmpty(OptionParameter))
-                return toString;
-            toString = toString.Append(OptionParameter);
-            if (!string.IsNullOrEmpty(OptionParameterValue))
-                toString += "=" + OptionParameterValue;
+            toString = toString.Append(Parameter?.ToString());
             return toString;
         }
 
@@ -36,10 +37,11 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             if (string.IsNullOrEmpty(optionPart))
                 return;
             var parts = optionPart.Split('=');
-            OptionParameter = parts[0].Trim();
-            if (parts.Length < 2) return;
-            OptionParameterValue = parts[1].Trim();
             if (parts.Length > 2) throw new NotSupportedException();
+            Parameter = new ParametrizedOption(
+                parts[0].Trim(),
+                parts.Length > 1 ? parts[1].Trim() : null,
+                null);
         }
 
         public string AnyWithMinus
@@ -69,17 +71,10 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         public string ShortOption { get; set; }
         public string LongOption  { get; set; }
 
-        public string LongOptionWithMinus
-        {
-            get { return string.IsNullOrEmpty(LongOption) ? null : "--" + LongOption; }
-        }
+        public string LongOptionWithMinus => string.IsNullOrEmpty(LongOption) ? null : "--" + LongOption;
 
-        public string ShortOptionWithMinus
-        {
-            get { return string.IsNullOrEmpty(ShortOption) ? null : "-" + ShortOption; }
-        }
+        public string ShortOptionWithMinus => string.IsNullOrEmpty(ShortOption) ? null : "-" + ShortOption;
 
-        public string OptionParameter      { get; set; }
-        public string OptionParameterValue { get; set; }
+        public ParametrizedOption Parameter { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace iSukces.SimpleLinux.AutoCode
 {
     internal static class AutocodeExtensions
     {
-        public static string Camelise(this string x)
+        public static string Camelise(this string x, bool forceToLower=false)
         {
             var upper = true;
             var sb    = new StringBuilder(x.Length);
@@ -23,7 +23,7 @@ namespace iSukces.SimpleLinux.AutoCode
                 if (upper)
                     sb.Append(char.ToUpper(i));
                 else
-                    sb.Append(i);
+                    sb.Append(forceToLower ? char.ToLower(i) : i);
                 upper = false;
             }
 

@@ -45,8 +45,33 @@ namespace iSukces.SimpleLinux.Docker
 
     }
 
-    public partial struct DockerComposeBuildOptions : IDockerComposeOption
+    public partial class DockerComposeBuildOptions : IDockerComposeOption
     {
+        public IEnumerable<string> GetCodeItems(OptionPreference preferLongNames = OptionPreference.Short)
+        {
+            // Compress the build context using gzip.
+            if ((Options & DockerComposeBuildFlags.Compress) != 0)
+                yield return "--compress";
+            // Always remove intermediate containers.
+            if ((Options & DockerComposeBuildFlags.ForceRm) != 0)
+                yield return "--force-rm";
+            // Do not use cache when building the image.
+            if ((Options & DockerComposeBuildFlags.NoCache) != 0)
+                yield return "--no-cache";
+            // Do not remove intermediate containers after a successful build.
+            if ((Options & DockerComposeBuildFlags.NoRm) != 0)
+                yield return "--no-rm";
+            // Build images in parallel.
+            if ((Options & DockerComposeBuildFlags.Parallel) != 0)
+                yield return "--parallel";
+            // Always attempt to pull a newer version of the image.
+            if ((Options & DockerComposeBuildFlags.Pull) != 0)
+                yield return "--pull";
+            // Don't print anything to `STDOUT`.
+            if ((Options & DockerComposeBuildFlags.Quiet) != 0)
+                yield return preferLongNames == OptionPreference.Long ? "--quiet" : "-q";
+        }
+
         public DockerComposeBuildOptions WithCompress(bool value = true)
         {
             Options = Options.SetOrClear(DockerComposeBuildFlags.Compress, value);
@@ -96,6 +121,7 @@ namespace iSukces.SimpleLinux.Docker
     [Flags]
     public enum DockerComposeBuildFlags
     {
+        None = 0,
         Compress = 1,
         ForceRm = 2,
         NoCache = 4,

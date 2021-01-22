@@ -45,8 +45,33 @@ namespace iSukces.SimpleLinux.Docker
 
     }
 
-    public partial struct DockerComposeCommonOptions : ICommandsPartsProvider
+    public partial class DockerComposeCommonOptions : ICommandsPartsProvider
     {
+        public IEnumerable<string> GetCodeItems(OptionPreference preferLongNames = OptionPreference.Short)
+        {
+            // Show more output
+            if ((Options & DockerComposeCommonFlags.Verbose) != 0)
+                yield return "--verbose";
+            // Do not print ANSI control characters
+            if ((Options & DockerComposeCommonFlags.NoAnsi) != 0)
+                yield return "--no-ansi";
+            // Print version and exit
+            if ((Options & DockerComposeCommonFlags.Version) != 0)
+                yield return preferLongNames == OptionPreference.Long ? "--version" : "-v";
+            // Use TLS; implied by --tlsverify
+            if ((Options & DockerComposeCommonFlags.Tls) != 0)
+                yield return "--tls";
+            // Use TLS and verify the remote
+            if ((Options & DockerComposeCommonFlags.Tlsverify) != 0)
+                yield return "--tlsverify";
+            // Don't check the daemon's hostname against the name specified in the client certificate
+            if ((Options & DockerComposeCommonFlags.SkipHostnameCheck) != 0)
+                yield return "--skip-hostname-check";
+            // If set, Compose will attempt to convert deploy keys in v3 files to their non-Swarm equivalent
+            if ((Options & DockerComposeCommonFlags.Compatibility) != 0)
+                yield return "--compatibility";
+        }
+
         public DockerComposeCommonOptions WithCompatibility(bool value = true)
         {
             Options = Options.SetOrClear(DockerComposeCommonFlags.Compatibility, value);
@@ -96,6 +121,7 @@ namespace iSukces.SimpleLinux.Docker
     [Flags]
     public enum DockerComposeCommonFlags
     {
+        None = 0,
         Verbose = 1,
         NoAnsi = 2,
         Version = 4,

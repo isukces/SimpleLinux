@@ -22,8 +22,8 @@ namespace iSukces.SimpleLinux.Tests
             {
                 var a = q.Values[16];
                 Assert.Equal("scale", a.LongOption);
-                Assert.Equal("SERVICE", a.OptionParameter);
-                Assert.Equal("NUM", a.OptionParameterValue);
+                Assert.Equal("SERVICE", a.Parameter.Name);
+                Assert.Equal("NUM", a.Parameter.Value);
             }
         }
 

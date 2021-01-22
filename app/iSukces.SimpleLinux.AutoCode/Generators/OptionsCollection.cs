@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
@@ -36,7 +37,6 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 result.Values.Add(value);
             }
 
-
             {
                 var optionToItem = result.GetMap();
                 foreach (var option1 in result.Values)
@@ -58,6 +58,21 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             IncompatibleValues.Add(new IncompatibleOptions(option1, option2));
         }
 
+        [CanBeNull]
+        public OptionsCollectionValue FindByOption(string option)
+        {
+            return Values.FirstOrDefault(i => i.Match(option));
+        }
+
+        [NotNull]
+        public OptionsCollectionValue GetByOption(string option)
+        {
+            var tmp = FindByOption(option);
+            if (tmp is null)
+                throw new Exception("unable to find definition for " + option);
+            return tmp;
+        }
+
 
         public IReadOnlyDictionary<string, OptionsCollectionValue> GetMap()
         {
@@ -77,7 +92,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
 
         /// <summary>
-        /// Values pairs that can't used in common
+        ///     Values pairs that can't used in common
         /// </summary>
         [NotNull]
         public IList<IncompatibleOptions> IncompatibleValues { get; } = new List<IncompatibleOptions>();

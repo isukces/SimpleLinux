@@ -2,7 +2,7 @@
 
 namespace iSukces.SimpleLinux.Docker
 {
-    public partial struct DockerComposeCommonOptions
+    public partial class DockerComposeCommonOptions
     {
         public IEnumerable<string> GetItems()
         {

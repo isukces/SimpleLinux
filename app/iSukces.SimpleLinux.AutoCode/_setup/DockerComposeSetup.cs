@@ -95,7 +95,8 @@ namespace iSukces.SimpleLinux.AutoCode
     --scale SERVICE=NUM        Scale SERVICE to NUM instances. Overrides the
                                `scale` setting in the Compose file if present.";
             var item = enumsGenerator
-                .WithEnum("Docker.DockerComposeUp", optionsToParse);
+                .WithEnum("Docker.DockerComposeUp", optionsToParse)
+                .WithInteger("--scale");
             CommonSetup(item);
         }
 
