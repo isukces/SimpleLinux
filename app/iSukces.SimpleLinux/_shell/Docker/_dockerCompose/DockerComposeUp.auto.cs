@@ -138,6 +138,11 @@ namespace iSukces.SimpleLinux.Docker
             }
         }
 
+        public IEnumerable<string> GetItems()
+        {
+            return GetCodeItems();
+        }
+
         public DockerComposeUpOptions WithAbortOnContainerExit(bool value = true)
         {
             Options = Options.SetOrClear(DockerComposeUpFlags.AbortOnContainerExit, value);
@@ -239,6 +244,11 @@ namespace iSukces.SimpleLinux.Docker
         /// Scale SERVICE to NUM instances. Overrides the `scale` setting in the Compose file if present.
         /// </summary>
         public Dictionary<string,int> Scale { get; set; } = new Dictionary<string,int>();
+
+        public string Name
+        {
+            get { return "up"; }
+        }
 
     }
 

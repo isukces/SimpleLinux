@@ -125,6 +125,11 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             CreateEnumAndConversionMethods();
             CreateNamedParameters();
             AddGetCodeItemsMethod();
+
+            foreach (var i in this._item.CustomCreators)
+            {
+                i(MyStruct);
+            }
         }
 
         private void CreateEnumAndConversionMethods()

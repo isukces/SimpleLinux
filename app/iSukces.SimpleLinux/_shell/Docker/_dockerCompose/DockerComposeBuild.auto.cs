@@ -72,6 +72,11 @@ namespace iSukces.SimpleLinux.Docker
                 yield return preferLongNames == OptionPreference.Long ? "--quiet" : "-q";
         }
 
+        public IEnumerable<string> GetItems()
+        {
+            return GetCodeItems();
+        }
+
         public DockerComposeBuildOptions WithCompress(bool value = true)
         {
             Options = Options.SetOrClear(DockerComposeBuildFlags.Compress, value);
@@ -115,6 +120,11 @@ namespace iSukces.SimpleLinux.Docker
         }
 
         public DockerComposeBuildFlags Options { get; set; }
+
+        public string Name
+        {
+            get { return "build"; }
+        }
 
     }
 

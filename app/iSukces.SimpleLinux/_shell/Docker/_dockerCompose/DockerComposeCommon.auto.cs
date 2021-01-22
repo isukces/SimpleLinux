@@ -72,6 +72,11 @@ namespace iSukces.SimpleLinux.Docker
                 yield return "--compatibility";
         }
 
+        public IEnumerable<string> GetItems()
+        {
+            return GetCodeItems();
+        }
+
         public DockerComposeCommonOptions WithCompatibility(bool value = true)
         {
             Options = Options.SetOrClear(DockerComposeCommonFlags.Compatibility, value);

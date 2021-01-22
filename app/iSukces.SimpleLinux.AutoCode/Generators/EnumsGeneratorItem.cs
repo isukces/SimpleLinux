@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using iSukces.Code;
 using JetBrains.Annotations;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
 {
     public class EnumsGeneratorItem
     {
+        public void AddCustomCreator(CustomCreatorDelegate action)
+        {
+            CustomCreators.Add(action);
+        }
+
         public FileInfo GetFileName(DirectoryInfo projectDir)
         {
             var parts = TypeName.Split('+');
@@ -28,6 +34,13 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         public EnumsGeneratorItem WithConflict(string option1, string option2)
         {
             Options.AddConflict(option1, option2);
+            return this;
+        }
+
+        public EnumsGeneratorItem WithInteger(string option)
+        {
+            var el = Options.GetByOption(option);
+            el.Parameter = el.Parameter.WithEncoder(OptionValueProcessor.Integer);
             return this;
         }
 
@@ -87,11 +100,9 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         public IFilenameMaker FilenameMaker { get; set; }
 
-        public EnumsGeneratorItem WithInteger(string option)
-        {
-            var el = Options.GetByOption(option);
-            el.Parameter     = el.Parameter.WithEncoder(OptionValueProcessor.Integer);
-            return this;
-        }
+        public List<CustomCreatorDelegate> CustomCreators { get; } = new List<CustomCreatorDelegate>();
+        public Dictionary<string, string>  Tags           { get; } = new Dictionary<string, string>();
     }
+
+    public delegate void CustomCreatorDelegate(CsClass optionClass);
 }

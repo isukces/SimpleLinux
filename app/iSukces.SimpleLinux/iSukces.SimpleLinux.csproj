@@ -24,15 +24,6 @@
       <Compile Update="_files\ScriptFileContentSource.cs">
         <DependentUpon>IFileContentSource.cs</DependentUpon>
       </Compile>
-      <Compile Update="_shell\Docker\_dockerCompose\DockerComposeBuild.auto.cs">
-        <DependentUpon>DockerComposeBuildOptions.cs</DependentUpon>
-      </Compile>
-      <Compile Update="_shell\Docker\_dockerCompose\DockerComposeCommon.auto.cs">
-        <DependentUpon>DockerComposeCommand.cs</DependentUpon>
-      </Compile>
-      <Compile Update="_shell\Docker\_dockerCompose\DockerComposeUp.auto.cs">
-        <DependentUpon>DockerComposeUpOptions.cs</DependentUpon>
-      </Compile>
     </ItemGroup>
     <ItemGroup>
       <None Remove="iSukces.SimpleLinux.csproj.DotSettings" />

@@ -1,4 +1,6 @@
-﻿using iSukces.SimpleLinux.AutoCode.Generators;
+﻿using System.Collections.Generic;
+using iSukces.Code;
+using iSukces.SimpleLinux.AutoCode.Generators;
 using iSukces.SimpleLinux.Docker;
 
 namespace iSukces.SimpleLinux.AutoCode
@@ -27,6 +29,7 @@ namespace iSukces.SimpleLinux.AutoCode
     -q, --quiet             Don't print anything to `STDOUT`.";
             var item = enumsGenerator
                 .WithEnum("Docker.DockerComposeBuild", optionsToParse);
+            item.Tags["name"] = "build";
             CommonSetup(item);
         }
 
@@ -97,6 +100,7 @@ namespace iSukces.SimpleLinux.AutoCode
             var item = enumsGenerator
                 .WithEnum("Docker.DockerComposeUp", optionsToParse)
                 .WithInteger("--scale");
+            item.Tags["name"] = "up";
             CommonSetup(item);
         }
 
@@ -107,7 +111,25 @@ namespace iSukces.SimpleLinux.AutoCode
             if (isCommon)
                 item.WithInterface<ICommandsPartsProvider>();
             else
+            {
                 item.WithInterface<IDockerComposeOption>();
+                var name = item.Tags["name"];
+                item.AddCustomCreator(c =>
+                {
+                    var p = c.AddProperty("Name", "string")
+                        .WithIsPropertyReadOnly()
+                        .WithNoEmitField()
+                        .WithOwnGetter(name.CsEncode());
+                    p.OwnGetterIsExpression = true;
+                });
+            }
+
+            item.AddCustomCreator(c =>
+            {
+                c.AddMethod("GetItems", c.GetTypeName(typeof(IEnumerable<string>)))
+                    .WithBody("return GetCodeItems();");
+            });
+           
         }
     }
 }
