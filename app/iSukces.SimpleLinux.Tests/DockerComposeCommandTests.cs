@@ -56,7 +56,7 @@ namespace iSukces.SimpleLinux.Tests
             const string expected = "docker-compose up -d --remove-orphans --exit-code-from myservice";
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void T04_should_create_up_command_with_debug_level()
         {
@@ -67,9 +67,26 @@ namespace iSukces.SimpleLinux.Tests
                 Common = new DockerComposeCommonOptions()
                     .WithLogLevel(DockerComposeCommonLogLevelValues.Debug)
             };
-            
+
             var          actual   = cmd.GetCode();
             const string expected = "docker-compose --log-level DEBUG up -d";
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void T05_should_create_port_command()
+        {
+            var cmd = new DockerComposeCommand
+            {
+                Option = new DockerComposePortOptions()
+                    .WithIndex(11)
+                    .WithProtocol(DockerComposePortProtocolValues.Tcp),
+                Common = new DockerComposeCommonOptions()
+                    .WithLogLevel(DockerComposeCommonLogLevelValues.Debug)
+            };
+
+            var          actual   = cmd.GetCode();
+            const string expected = "docker-compose --log-level DEBUG port --protocol tcp --index 11";
             Assert.Equal(expected, actual);
         }
     }

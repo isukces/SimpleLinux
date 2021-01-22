@@ -5,10 +5,12 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
     [ImmutableObject(true)]
     public partial class ParametrizedOption
     {
-        public ParametrizedOption(string otherName, string value, string name = null, ValueEncoder encoder = null,
-            string valueDescription = null)
+        public ParametrizedOption(string value, string name = null, ValueEncoder encoder = null,
+            string valueDescription = null, string otherName=null)
         {
             // --scale SERVICE=NUM
+            if (value == "\"*\"")
+                value = "optionValue";
             Name             = name?.Trim();
             Value            = value?.Trim();
             Encoder          = encoder;
@@ -26,17 +28,17 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         public ParametrizedOption WithEncoder(ValueEncoder encoder)
         {
-            return new ParametrizedOption(OtherName, Value, Name, encoder, ValueDescription);
+            return new ParametrizedOption(Value, Name, encoder, ValueDescription, OtherName);
         }
 
         public ParametrizedOption WithValueDescription(string valueDescription)
         {
-            return new ParametrizedOption(OtherName, Value, Name, Encoder, valueDescription);
+            return new ParametrizedOption(Value, Name, Encoder, valueDescription, OtherName);
         }
 
         public ParametrizedOption WithOtherName(string otherName)
         {
-            return new ParametrizedOption(otherName, Value, Name, Encoder, ValueDescription);
+            return new ParametrizedOption(Value, Name, Encoder, ValueDescription, otherName);
         }
         public string       Name             { get; }
         public string       Value            { get; }

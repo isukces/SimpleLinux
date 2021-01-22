@@ -116,8 +116,13 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         private void CreateCode()
         {
-            Struct_AddOptionsProperty();
-            CreateEnumAndConversionMethods();
+            var hasEnum = CreateEnumAndConversionMethods();
+            if (hasEnum)
+                 Struct_AddOptionsProperty();
+            
+            foreach (var i in _item.ImplementedInterfaces)
+                MyStruct.ImplementedInterfaces.Add(MyNamespace.GetTypeName(i));
+            
             CreateNamedParameters();
             AddGetCodeItemsMethod();
 
@@ -125,7 +130,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 action(MyStruct);
         }
 
-        private void CreateEnumAndConversionMethods()
+        private bool CreateEnumAndConversionMethods()
         {
             var parts               = _item.OwnerClasses;
             var conflictsCodeMethod = Extensions_CheckConflictsCode(_item);
@@ -140,8 +145,10 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             var enumSource = from q in _item.Options.Values
                 where string.IsNullOrEmpty(q.Parameter?.Value)
                 select q;
+            var generate = false;
             foreach (var option in enumSource)
             {
+                generate = true;
                 var enumItem = new CsEnumItem(option.GetCsName())
                 {
                     Description = option.FullDescription,
@@ -159,12 +166,14 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                     {
                         var stringValue = GetStringValue(preferLongNameVariable, option, ExtensionsClass);
                         w.WriteDescriptionComment(option);
-                        var condition = GetEnumCondition(propertyName1, MyEnum, enumItem);
+                        var condition = GetEnumCondition(flagsPropertyName, MyEnum, enumItem);
                         w.SingleLineIf(condition, $"yield return {stringValue};");
                     });
                 }
             }
 
+            if (!generate)
+                return false;
             {
                 var m = ExtensionsClass
                     .AddMethod("OptionsToString", MyNamespace.GetTypeName<IEnumerable<string>>())
@@ -176,6 +185,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             }
 
             AddEnumToOutput(parts, MyNamespace, MyEnum);
+            return true;
         }
 
         private void CreateNamedParameters()
@@ -332,7 +342,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             {
                 var mask = GetMask(MyEnum, enumItem.EnumName);
                 var cw   = CsCodeWriter.Create<SingleTaskEnumsGenerator>();
-                cw.WriteLine($"Options = Options.{SetOrClearMethod}({mask}, value);");
+                cw.WriteLine($"{flagsPropertyName} = {flagsPropertyName}.{SetOrClearMethod}({mask}, value);");
                 cw.WriteLine("return this;");
                 var m = MyStruct.AddMethod("With" + enumItem.EnumName, MyStructName).WithBody(cw);
                 m.AddParam("value", "bool").ConstValue = "true";
@@ -341,11 +351,10 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         private void Struct_AddOptionsProperty()
         {
-            MyStruct.AddProperty(propertyName1, MyEnumTypeName)
+            MyStruct.AddProperty(flagsPropertyName, MyEnumTypeName)
                 .WithNoEmitField()
                 .WithMakeAutoImplementIfPossible();
-            foreach (var i in _item.ImplementedInterfaces)
-                MyStruct.ImplementedInterfaces.Add(MyNamespace.GetTypeName(i));
+          
         }
 
         private string MyStructName   => _item.EnumName + "Options";
@@ -368,7 +377,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         private readonly Lazy<CsNamespace> _lazyMyNamespace;
         private readonly Lazy<CsClass> _lazyExtensionsClass;
         private readonly Lazy<CsEnum> _lazyMyEnum;
-        private const string propertyName1 = "Options";
+        private const string flagsPropertyName = "Flags";
         private const string preferLongNameVariable = "preferLongNames";
         private const string SetOrClearMethod = "SetOrClear";
         private const string valueVariable = "value";

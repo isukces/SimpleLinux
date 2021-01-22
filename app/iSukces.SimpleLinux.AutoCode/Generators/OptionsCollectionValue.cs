@@ -31,10 +31,23 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         public void UpdateFromParsedOption(string option)
         {
             var optionParts = option.Trim().Split(' ');
-            AnyWithMinus = optionParts[0];
-            if (optionParts.Length > 2)
-                throw new NotImplementedException("Unable to parse " + option);
-            if (optionParts.Length == 2) AppendOptionPart(optionParts[1]);
+
+            var first = optionParts[0];
+            if (first.Contains('='))
+            {
+                if (optionParts.Length != 1)
+                    throw new NotImplementedException();
+                var g = first.Split('=');
+                AnyWithMinus = g[0];
+                AppendOptionPart(g[1]);
+            }
+            else
+            {
+                AnyWithMinus = first;
+                if (optionParts.Length > 2)
+                    throw new NotImplementedException("Unable to parse " + option);
+                if (optionParts.Length == 2) AppendOptionPart(optionParts[1]);
+            }
         }
 
         private void AppendOptionPart(string optionPart)
@@ -46,8 +59,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             if (parts.Length > 2) throw new NotSupportedException();
 
             Parameter = parts.Length > 1 
-                ? new ParametrizedOption(null, parts[1].Trim(), name: parts[0].Trim()) 
-                : new ParametrizedOption(null, parts[0].Trim());
+                ? new ParametrizedOption(parts[1].Trim(), parts[0].Trim()) 
+                : new ParametrizedOption(parts[0].Trim());
             
         }
 

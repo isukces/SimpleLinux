@@ -10,7 +10,9 @@ namespace iSukces.SimpleLinux.AutoCode
         public static void Add(EnumsGenerator enumsGenerator)
         {
             Add_UpOptions(enumsGenerator);
+            Add_ConfigOptions(enumsGenerator);
             Add_BuildOptions(enumsGenerator);
+            Add_PortOptions(enumsGenerator);
             Add_Common(enumsGenerator);
         }
 
@@ -111,6 +113,41 @@ namespace iSukces.SimpleLinux.AutoCode
                 .WithIntegerValue("--timeout", "timeout in seconds")
                 .WithStringValue("--exit-code-from", "service name");
             item.Tags["name"] = "up";
+            CommonSetup(item);
+        }
+        
+         private static void Add_PortOptions(EnumsGenerator enumsGenerator)
+         {
+             const string optionsToParse = @"
+    --protocol=proto  tcp or udp [default: tcp]
+    --index=index     index of the container if there are multiple
+                      instances of a service [default: 1]
+";
+             var item = enumsGenerator
+                 .WithEnum("Docker.DockerComposePort", optionsToParse)
+                 .WithIntegerValue("--index")
+                 .WithEnumValue("--protocol", "tcp,udp".Split(','));
+            item.Tags["name"] = "port";
+            CommonSetup(item);
+        }
+        
+           private static void Add_ConfigOptions(EnumsGenerator enumsGenerator)
+        {
+            const string optionsToParse = @"
+    --resolve-image-digests  Pin image tags to digests.
+    --no-interpolate         Don't interpolate environment variables.
+    -q, --quiet              Only validate the configuration, don't print
+                             anything.
+    --services               Print the service names, one per line.
+    --volumes                Print the volume names, one per line.
+    --hash=servicesOrWild    Print the service config hash, one per line.
+                             Set ""service1,service2"" for a list of specified services
+                             or use the wildcard symbol to display all services.
+";
+            var item = enumsGenerator
+                .WithEnum("Docker.DockerComposeConfig", optionsToParse)
+                .WithStringValue("--hash", "services");
+            item.Tags["name"] = "config";
             CommonSetup(item);
         }
 

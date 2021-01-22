@@ -62,7 +62,7 @@ namespace iSukces.SimpleLinux.Tests
             var q = new DockerComposeUpOptions()
                 .WithRemoveOrphans()
                 .WithForceRecreate();
-            var aa = q.Options.OptionsToString(OptionPreference.Long);
+            var aa = q.Flags.OptionsToString(OptionPreference.Long);
             var bb = string.Join(" ", aa);
             Assert.Equal("--force-recreate --remove-orphans", bb);
         }

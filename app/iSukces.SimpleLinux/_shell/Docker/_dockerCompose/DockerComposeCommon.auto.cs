@@ -65,25 +65,25 @@ namespace iSukces.SimpleLinux.Docker
         public IEnumerable<string> GetCodeItems(OptionPreference preferLongNames = OptionPreference.Short)
         {
             // --verbose: Show more output
-            if ((Options & DockerComposeCommonFlags.Verbose) != 0)
+            if ((Flags & DockerComposeCommonFlags.Verbose) != 0)
                 yield return "--verbose";
             // --no-ansi: Do not print ANSI control characters
-            if ((Options & DockerComposeCommonFlags.NoAnsi) != 0)
+            if ((Flags & DockerComposeCommonFlags.NoAnsi) != 0)
                 yield return "--no-ansi";
             // -v, --version: Print version and exit
-            if ((Options & DockerComposeCommonFlags.Version) != 0)
+            if ((Flags & DockerComposeCommonFlags.Version) != 0)
                 yield return preferLongNames == OptionPreference.Long ? "--version" : "-v";
             // --tls: Use TLS; implied by --tlsverify
-            if ((Options & DockerComposeCommonFlags.Tls) != 0)
+            if ((Flags & DockerComposeCommonFlags.Tls) != 0)
                 yield return "--tls";
             // --tlsverify: Use TLS and verify the remote
-            if ((Options & DockerComposeCommonFlags.Tlsverify) != 0)
+            if ((Flags & DockerComposeCommonFlags.Tlsverify) != 0)
                 yield return "--tlsverify";
             // --skip-hostname-check: Don't check the daemon's hostname against the name specified in the client certificate
-            if ((Options & DockerComposeCommonFlags.SkipHostnameCheck) != 0)
+            if ((Flags & DockerComposeCommonFlags.SkipHostnameCheck) != 0)
                 yield return "--skip-hostname-check";
             // --compatibility: If set, Compose will attempt to convert deploy keys in v3 files to their non-Swarm equivalent
-            if ((Options & DockerComposeCommonFlags.Compatibility) != 0)
+            if ((Flags & DockerComposeCommonFlags.Compatibility) != 0)
                 yield return "--compatibility";
             // -f, --file =FILE: Specify an alternate compose file (default: docker-compose.yml)
             if (!string.IsNullOrEmpty(File))
@@ -142,8 +142,8 @@ namespace iSukces.SimpleLinux.Docker
 
         public DockerComposeCommonOptions WithCompatibility(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
-            Options = Options.SetOrClear(DockerComposeCommonFlags.Compatibility, value);
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            Flags = Flags.SetOrClear(DockerComposeCommonFlags.Compatibility, value);
             return this;
         }
 
@@ -153,7 +153,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="file">alternate compose file</param>
         public DockerComposeCommonOptions WithFile(string file)
         {
-            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             File = file;
             return this;
         }
@@ -164,7 +164,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="host">daemon socket to connect to</param>
         public DockerComposeCommonOptions WithHost(string host)
         {
-            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             Host = host;
             return this;
         }
@@ -175,15 +175,15 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="level"></param>
         public DockerComposeCommonOptions WithLogLevel(DockerComposeCommonLogLevelValues level)
         {
-            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             LogLevel = level;
             return this;
         }
 
         public DockerComposeCommonOptions WithNoAnsi(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
-            Options = Options.SetOrClear(DockerComposeCommonFlags.NoAnsi, value);
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            Flags = Flags.SetOrClear(DockerComposeCommonFlags.NoAnsi, value);
             return this;
         }
 
@@ -193,7 +193,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="path">alternate working directory</param>
         public DockerComposeCommonOptions WithProjectDirectory(string path)
         {
-            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             ProjectDirectory = path;
             return this;
         }
@@ -204,22 +204,22 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="name">alternate project name</param>
         public DockerComposeCommonOptions WithProjectName(string name)
         {
-            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             ProjectName = name;
             return this;
         }
 
         public DockerComposeCommonOptions WithSkipHostnameCheck(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
-            Options = Options.SetOrClear(DockerComposeCommonFlags.SkipHostnameCheck, value);
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            Flags = Flags.SetOrClear(DockerComposeCommonFlags.SkipHostnameCheck, value);
             return this;
         }
 
         public DockerComposeCommonOptions WithTls(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
-            Options = Options.SetOrClear(DockerComposeCommonFlags.Tls, value);
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            Flags = Flags.SetOrClear(DockerComposeCommonFlags.Tls, value);
             return this;
         }
 
@@ -229,7 +229,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="caPath">Trust certs signed only by this CA</param>
         public DockerComposeCommonOptions WithTlscacert(string caPath)
         {
-            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             Tlscacert = caPath;
             return this;
         }
@@ -240,7 +240,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="clientCertPath">Path to TLS certificate file</param>
         public DockerComposeCommonOptions WithTlscert(string clientCertPath)
         {
-            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             Tlscert = clientCertPath;
             return this;
         }
@@ -251,33 +251,33 @@ namespace iSukces.SimpleLinux.Docker
         /// <param name="tlsKeyPath">Path to TLS key file</param>
         public DockerComposeCommonOptions WithTlskey(string tlsKeyPath)
         {
-            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:215
+            // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             Tlskey = tlsKeyPath;
             return this;
         }
 
         public DockerComposeCommonOptions WithTlsverify(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
-            Options = Options.SetOrClear(DockerComposeCommonFlags.Tlsverify, value);
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            Flags = Flags.SetOrClear(DockerComposeCommonFlags.Tlsverify, value);
             return this;
         }
 
         public DockerComposeCommonOptions WithVerbose(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
-            Options = Options.SetOrClear(DockerComposeCommonFlags.Verbose, value);
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            Flags = Flags.SetOrClear(DockerComposeCommonFlags.Verbose, value);
             return this;
         }
 
         public DockerComposeCommonOptions WithVersion(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:334
-            Options = Options.SetOrClear(DockerComposeCommonFlags.Version, value);
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            Flags = Flags.SetOrClear(DockerComposeCommonFlags.Version, value);
             return this;
         }
 
-        public DockerComposeCommonFlags Options { get; set; }
+        public DockerComposeCommonFlags Flags { get; set; }
 
         /// <summary>
         /// -f, --file =FILE: Specify an alternate compose file (default: docker-compose.yml)
