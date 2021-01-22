@@ -11,25 +11,25 @@ namespace iSukces.SimpleLinux.Docker
         public static IEnumerable<string> OptionsToString(this DockerComposeBuildFlags value, OptionPreference preferLongNames = OptionPreference.Short)
         {
             // generator : SingleTaskEnumsGenerator
-            // Compress the build context using gzip.
+            // --compress: Compress the build context using gzip.
             if ((value & DockerComposeBuildFlags.Compress) != 0)
                 yield return "--compress";
-            // Always remove intermediate containers.
+            // --force-rm: Always remove intermediate containers.
             if ((value & DockerComposeBuildFlags.ForceRm) != 0)
                 yield return "--force-rm";
-            // Do not use cache when building the image.
+            // --no-cache: Do not use cache when building the image.
             if ((value & DockerComposeBuildFlags.NoCache) != 0)
                 yield return "--no-cache";
-            // Do not remove intermediate containers after a successful build.
+            // --no-rm: Do not remove intermediate containers after a successful build.
             if ((value & DockerComposeBuildFlags.NoRm) != 0)
                 yield return "--no-rm";
-            // Build images in parallel.
+            // --parallel: Build images in parallel.
             if ((value & DockerComposeBuildFlags.Parallel) != 0)
                 yield return "--parallel";
-            // Always attempt to pull a newer version of the image.
+            // --pull: Always attempt to pull a newer version of the image.
             if ((value & DockerComposeBuildFlags.Pull) != 0)
                 yield return "--pull";
-            // Don't print anything to `STDOUT`.
+            // -q, --quiet: Don't print anything to `STDOUT`.
             if ((value & DockerComposeBuildFlags.Quiet) != 0)
                 yield return preferLongNames == OptionPreference.Long ? "--quiet" : "-q";
         }
@@ -49,25 +49,25 @@ namespace iSukces.SimpleLinux.Docker
     {
         public IEnumerable<string> GetCodeItems(OptionPreference preferLongNames = OptionPreference.Short)
         {
-            // Compress the build context using gzip.
+            // --compress: Compress the build context using gzip.
             if ((Options & DockerComposeBuildFlags.Compress) != 0)
                 yield return "--compress";
-            // Always remove intermediate containers.
+            // --force-rm: Always remove intermediate containers.
             if ((Options & DockerComposeBuildFlags.ForceRm) != 0)
                 yield return "--force-rm";
-            // Do not use cache when building the image.
+            // --no-cache: Do not use cache when building the image.
             if ((Options & DockerComposeBuildFlags.NoCache) != 0)
                 yield return "--no-cache";
-            // Do not remove intermediate containers after a successful build.
+            // --no-rm: Do not remove intermediate containers after a successful build.
             if ((Options & DockerComposeBuildFlags.NoRm) != 0)
                 yield return "--no-rm";
-            // Build images in parallel.
+            // --parallel: Build images in parallel.
             if ((Options & DockerComposeBuildFlags.Parallel) != 0)
                 yield return "--parallel";
-            // Always attempt to pull a newer version of the image.
+            // --pull: Always attempt to pull a newer version of the image.
             if ((Options & DockerComposeBuildFlags.Pull) != 0)
                 yield return "--pull";
-            // Don't print anything to `STDOUT`.
+            // -q, --quiet: Don't print anything to `STDOUT`.
             if ((Options & DockerComposeBuildFlags.Quiet) != 0)
                 yield return preferLongNames == OptionPreference.Long ? "--quiet" : "-q";
         }

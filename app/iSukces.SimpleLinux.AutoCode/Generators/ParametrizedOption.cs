@@ -5,7 +5,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
     [ImmutableObject(true)]
     public class ParametrizedOption
     {
-        public ParametrizedOption(string name, string value, OptionValueProcessor encoder)
+        public ParametrizedOption(string value, string name=null, OptionValueProcessor encoder = null)
         {
             // --scale SERVICE=NUM
             Name    = name?.Trim();
@@ -23,7 +23,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         public ParametrizedOption WithEncoder(OptionValueProcessor encoder)
         {
-            return new ParametrizedOption(Name, Value, encoder);
+            return new ParametrizedOption(Value, Name, encoder);
         }
 
 

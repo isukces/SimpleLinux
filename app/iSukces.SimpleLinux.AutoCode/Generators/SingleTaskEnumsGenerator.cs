@@ -126,10 +126,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             CreateNamedParameters();
             AddGetCodeItemsMethod();
 
-            foreach (var i in this._item.CustomCreators)
-            {
-                i(MyStruct);
-            }
+            foreach (var action in _item.CustomCreators)
+                action(MyStruct);
         }
 
         private void CreateEnumAndConversionMethods()
@@ -145,17 +143,16 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             fb.AddFlagsAttribute(MyNamespace);
 
             var enumSource = from q in _item.Options.Values
-                where string.IsNullOrEmpty(q.Parameter?.Name)
+                where string.IsNullOrEmpty(q.Parameter?.Value)
                 select q;
             foreach (var option in enumSource)
             {
                 var enumItem = new CsEnumItem(option.GetCsName())
                 {
-                    Description = option.Description,
+                    Description = option.FullDescription,
                 };
                 var stringValue = GetStringValue(preferLongNameVariable, option, ExtensionsClass);
-                if (!string.IsNullOrEmpty(option.Description))
-                    optionsToStringCode.WriteLine("// " + option.Description);
+                optionsToStringCode.WriteDescriptionComment(option);
                 var condition = GetEnumCondition(valueVariable, MyEnum, enumItem);
                 optionsToStringCode.SingleLineIf(condition, $"yield return {stringValue};");
                 MyStruct_AddWithMethod(enumItem, fb.Value == 1);
@@ -166,8 +163,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                     apps.Add((w, r) =>
                     {
                         var stringValue = GetStringValue(preferLongNameVariable, option, ExtensionsClass);
-                        if (!string.IsNullOrEmpty(option.Description))
-                            w.WriteLine("// " + option.Description);
+                        w.WriteDescriptionComment(option);
                         var condition = GetEnumCondition(propertyName1, MyEnum, enumItem);
                         w.SingleLineIf(condition, $"yield return {stringValue};");
                     });
@@ -192,44 +188,76 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             foreach (var option in _item.Options.Values)
             {
                 var p = option.Parameter;
-                if (string.IsNullOrEmpty(p?.Name) || p.Encoder is null)
+                if (string.IsNullOrEmpty(p?.Value) || p.Encoder is null)
                     continue;
 
                 var str = MyStruct;
 
-                var prop = str.AddProperty(option.GetCsName(), p.Encoder.GetPropertyType(Kind.Dictionary))
+                var kind = string.IsNullOrEmpty(p.Name) ? Kind.SingleValue : Kind.Dictionary;
+                var prop = str.AddProperty(option.GetCsName(), p.Encoder.GetPropertyType(kind))
                     .WithNoEmitField()
                     .WithMakeAutoImplementIfPossible();
-                prop.Description = option.Description;
-                prop.ConstValue  = "new " + prop.Type + "()";
+                prop.Description = option.FullDescription;
+                if (kind == Kind.Dictionary)
+                    prop.ConstValue = $"new {prop.Type}()";
 
-                // fluent method With..
-                var key   = p.Name.ToLower();
-                var value = p.Value?.ToLower() ?? "value";
-
-                var cs = new CsCodeWriter()
-                    .WriteLine($"{prop.Name}[{key}] = {value};")
-                    .WriteLine("return this;");
-                var fluentMethod = str.AddMethod("With" + prop.Name, str.Name)
-                    .WithBody(cs);
-
-                fluentMethod.AddParam<string>(key, str);
-                fluentMethod.AddParam(value, str.GetTypeName(p.Encoder.ValueType));
-                fluentMethod.Description = prop.Description;
-
-                apps.Add((cc, re) =>
                 {
-                    if (!string.IsNullOrEmpty(option.Description))
-                        cc.WriteLine("// " + option.Description);
-                    cc.Open("foreach(var pair in " + prop.Name + ")");
-                    cc.WriteLine("yield return " + option.AnyWithMinus.CsEncode() + ';');
-                    var expression = p.Encoder.Convert("pair.Value", re);
-                    cc.WriteLine($"var value = {expression};");
-                    cc.WriteLine("yield return $\"{pair.Key}={value}\";");
-                    cc.Close();
-                });
+
+                    var key           = p.Name?.ToLower();
+                    var value         = p.Value.ToLower();
+                    var setExpression = prop.Name;
+                    if (kind == Kind.Dictionary)
+                        setExpression += "[" + key + "]";
+
+                    var cs = new CsCodeWriter()
+                        .WriteLine($"{setExpression} = {value};")
+                        .WriteLine("return this;");
+                    var fluentMethod = str.AddMethod("With" + prop.Name, str.Name)
+                        .WithBody(cs);
+
+                    if (kind == Kind.Dictionary)
+                        fluentMethod.AddParam<string>(key, str);
+                    fluentMethod.AddParam(value, str.GetTypeName(p.Encoder.ValueType));
+                    fluentMethod.Description = prop.Description;
+                }
+                switch (kind)
+                {
+                    case Kind.Dictionary:
+                    {
+               
+                        apps.Add((cc, re) =>
+                        {
+                            cc.WriteDescriptionComment(option);
+                            cc.Open("foreach(var pair in " + prop.Name + ")");
+                            cc.WriteLine("yield return " + option.AnyWithMinus.CsEncode() + ';');
+                            var expression = p.Encoder.Convert("pair.Value", re);
+                            cc.WriteLine($"var value = {expression};");
+                            cc.WriteLine("yield return $\"{pair.Key}={value}\";");
+                            cc.Close();
+                        });
+                    }
+                        break;
+                    case Kind.SingleValue:
+                    {
+                        
+                        apps.Add((cc, resolver) =>
+                        {
+                            cc.WriteDescriptionComment(option);
+                            var condition = p.Encoder.GetCondition(prop.Name);
+                            cc.Open($"if ({condition})");
+                            {
+                                cc.WriteLine("yield return " + option.AnyWithMinus.CsEncode() + ';');
+                                var expression = p.Encoder.Convert(prop.Name, resolver);
+                                cc.WriteLine($"yield return {expression};");
+                            }
+                            cc.Close();
+                        });
+                    }
+                        break;
+                }
             }
         }
+
 
         private string Extensions_CheckConflictsCode(EnumsGeneratorItem item)
         {

@@ -17,8 +17,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         public override string ToString()
         {
-            var toString = ShortOptionWithMinus.Append(LongOptionWithMinus, ", ");
-            toString = toString.Append(Parameter?.ToString());
+            var toString = ShortOptionWithMinus.AppendText(LongOptionWithMinus, ", ");
+            toString = toString.AppendText(Parameter?.ToString());
             return toString;
         }
 
@@ -38,10 +38,11 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 return;
             var parts = optionPart.Split('=');
             if (parts.Length > 2) throw new NotSupportedException();
-            Parameter = new ParametrizedOption(
-                parts[0].Trim(),
-                parts.Length > 1 ? parts[1].Trim() : null,
-                null);
+
+            Parameter = parts.Length > 1 
+                ? new ParametrizedOption(parts[1].Trim(), parts[0].Trim()) 
+                : new ParametrizedOption(parts[0].Trim());
+            
         }
 
         public string AnyWithMinus
@@ -75,6 +76,14 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         public string ShortOptionWithMinus => string.IsNullOrEmpty(ShortOption) ? null : "-" + ShortOption;
 
-        public ParametrizedOption Parameter { get; set; }
+        public ParametrizedOption Parameter       { get; set; }
+
+        public string FullDescription
+        {
+            get
+            {
+                return ToString().AppendText(Description, ": ");
+            }
+        }
     }
 }

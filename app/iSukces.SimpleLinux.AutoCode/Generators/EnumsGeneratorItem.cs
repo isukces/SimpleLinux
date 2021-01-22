@@ -40,9 +40,16 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         public EnumsGeneratorItem WithInteger(string option)
         {
             var el = Options.GetByOption(option);
-            el.Parameter = el.Parameter.WithEncoder(OptionValueProcessor.Integer);
+            el.Parameter = el.Parameter.WithEncoder(OptionValueProcessor.IntProcessor);
             return this;
         }
+        public EnumsGeneratorItem WithString(string option)
+        {
+            var el = Options.GetByOption(option);
+            el.Parameter = el.Parameter.WithEncoder(OptionValueProcessor.StringProcessor);
+            return this;
+        }
+        
 
 
         public EnumsGeneratorItem WithInterface<T>()

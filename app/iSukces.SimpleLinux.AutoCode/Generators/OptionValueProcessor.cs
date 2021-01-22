@@ -19,6 +19,18 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             return expression + "." + nameof(expression.ToString) + "(" + culture + ")";
         }
 
+        private static string ConvertToString(string expression, ITypeNameResolver resolver)
+        {
+            return expression;
+        }
+
+        public string GetCondition(string expression)
+        {
+            if (ValueType == typeof(string))
+                return $"!string.IsNullOrEmpty({expression})";
+            return $"!({expression} is null)";
+        }
+
         public Type GetPropertyType(Kind kind)
         {
             switch (kind)
@@ -28,6 +40,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 case Kind.SingleValue:
                     if (ValueType.IsValueType)
                         return typeof(Nullable<>).MakeGenericType(ValueType);
+                    if (ValueType.IsClass)
+                        return ValueType;
                     throw new NotSupportedException();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
@@ -37,13 +51,13 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         public Type                                    ValueType { get; }
         public Func<string, ITypeNameResolver, string> Convert   { get; }
 
-        public static readonly OptionValueProcessor Integer
+        public static readonly OptionValueProcessor IntProcessor
             = new OptionValueProcessor(typeof(int), ConvertToInt);
+
+        public static readonly OptionValueProcessor StringProcessor
+            = new OptionValueProcessor(typeof(string), ConvertToString);
     }
 
-    public class Dictionary<T>
-    {
-    }
 
     public enum Kind
     {

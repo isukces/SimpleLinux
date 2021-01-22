@@ -22,7 +22,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 {
                     if (value is null)
                         throw new Exception("Description without command");
-                    value.Description = value.Description.Append(description);
+                    value.Description = value.Description.AppendText(description);
                     continue;
                 }
 

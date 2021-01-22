@@ -3,12 +3,29 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using iSukces.Code;
 using iSukces.Code.Interfaces;
+using iSukces.SimpleLinux.AutoCode.Generators;
 
 namespace iSukces.SimpleLinux.AutoCode
 {
     internal static class AutocodeExtensions
     {
-        public static string Camelise(this string x, bool forceToLower=false)
+        public static void AddAggressiveInlining(this ICsClassMember csMethod, ITypeNameResolver cl)
+        {
+            var atr = CsAttribute.Make<MethodImplAttribute>(cl)
+                .WithArgumentCode(cl.GetTypeName<MethodImplOptions>() + "." + MethodImplOptions.AggressiveInlining);
+            csMethod.Attributes.Add(atr);
+        }
+
+        public static string AppendText(this string xTrimmed, string yTrimmed, string separator = " ")
+        {
+            if (string.IsNullOrEmpty(yTrimmed))
+                return xTrimmed;
+            if (string.IsNullOrEmpty(xTrimmed))
+                return yTrimmed;
+            return xTrimmed + separator + yTrimmed;
+        }
+
+        public static string Camelise(this string x, bool forceToLower = false)
         {
             var upper = true;
             var sb    = new StringBuilder(x.Length);
@@ -41,20 +58,12 @@ namespace iSukces.SimpleLinux.AutoCode
         {
             return x.ToString(CultureInfo.InvariantCulture);
         }
-        public static void AddAggressiveInlining(this ICsClassMember csMethod, ITypeNameResolver cl)
-        {
-            var atr = CsAttribute.Make<MethodImplAttribute>(cl)
-                .WithArgumentCode(cl.GetTypeName<MethodImplOptions>() + "." + MethodImplOptions.AggressiveInlining);
-            csMethod.Attributes.Add(atr);
-        }
 
-        public static string Append(this string xTrimmed, string yTrimmed, string separator = " ")
+        public static void WriteDescriptionComment(this CsCodeWriter writer, OptionsCollectionValue option)
         {
-            if (string.IsNullOrEmpty(yTrimmed))
-                return xTrimmed;
-            if (string.IsNullOrEmpty(xTrimmed))
-                return yTrimmed;
-            return xTrimmed + separator + yTrimmed;
+            var description = option.FullDescription;
+            if (string.IsNullOrEmpty(description)) return;
+            writer.WriteLine("// " + description);
         }
     }
 }

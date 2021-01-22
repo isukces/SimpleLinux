@@ -99,7 +99,8 @@ namespace iSukces.SimpleLinux.AutoCode
                                `scale` setting in the Compose file if present.";
             var item = enumsGenerator
                 .WithEnum("Docker.DockerComposeUp", optionsToParse)
-                .WithInteger("--scale");
+                .WithInteger("--scale")
+                .WithString("--exit-code-from");
             item.Tags["name"] = "up";
             CommonSetup(item);
         }

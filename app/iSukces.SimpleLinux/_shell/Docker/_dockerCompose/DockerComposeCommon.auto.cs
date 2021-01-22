@@ -11,25 +11,25 @@ namespace iSukces.SimpleLinux.Docker
         public static IEnumerable<string> OptionsToString(this DockerComposeCommonFlags value, OptionPreference preferLongNames = OptionPreference.Short)
         {
             // generator : SingleTaskEnumsGenerator
-            // Show more output
+            // --verbose: Show more output
             if ((value & DockerComposeCommonFlags.Verbose) != 0)
                 yield return "--verbose";
-            // Do not print ANSI control characters
+            // --no-ansi: Do not print ANSI control characters
             if ((value & DockerComposeCommonFlags.NoAnsi) != 0)
                 yield return "--no-ansi";
-            // Print version and exit
+            // -v, --version: Print version and exit
             if ((value & DockerComposeCommonFlags.Version) != 0)
                 yield return preferLongNames == OptionPreference.Long ? "--version" : "-v";
-            // Use TLS; implied by --tlsverify
+            // --tls: Use TLS; implied by --tlsverify
             if ((value & DockerComposeCommonFlags.Tls) != 0)
                 yield return "--tls";
-            // Use TLS and verify the remote
+            // --tlsverify: Use TLS and verify the remote
             if ((value & DockerComposeCommonFlags.Tlsverify) != 0)
                 yield return "--tlsverify";
-            // Don't check the daemon's hostname against the name specified in the client certificate
+            // --skip-hostname-check: Don't check the daemon's hostname against the name specified in the client certificate
             if ((value & DockerComposeCommonFlags.SkipHostnameCheck) != 0)
                 yield return "--skip-hostname-check";
-            // If set, Compose will attempt to convert deploy keys in v3 files to their non-Swarm equivalent
+            // --compatibility: If set, Compose will attempt to convert deploy keys in v3 files to their non-Swarm equivalent
             if ((value & DockerComposeCommonFlags.Compatibility) != 0)
                 yield return "--compatibility";
         }
@@ -49,25 +49,25 @@ namespace iSukces.SimpleLinux.Docker
     {
         public IEnumerable<string> GetCodeItems(OptionPreference preferLongNames = OptionPreference.Short)
         {
-            // Show more output
+            // --verbose: Show more output
             if ((Options & DockerComposeCommonFlags.Verbose) != 0)
                 yield return "--verbose";
-            // Do not print ANSI control characters
+            // --no-ansi: Do not print ANSI control characters
             if ((Options & DockerComposeCommonFlags.NoAnsi) != 0)
                 yield return "--no-ansi";
-            // Print version and exit
+            // -v, --version: Print version and exit
             if ((Options & DockerComposeCommonFlags.Version) != 0)
                 yield return preferLongNames == OptionPreference.Long ? "--version" : "-v";
-            // Use TLS; implied by --tlsverify
+            // --tls: Use TLS; implied by --tlsverify
             if ((Options & DockerComposeCommonFlags.Tls) != 0)
                 yield return "--tls";
-            // Use TLS and verify the remote
+            // --tlsverify: Use TLS and verify the remote
             if ((Options & DockerComposeCommonFlags.Tlsverify) != 0)
                 yield return "--tlsverify";
-            // Don't check the daemon's hostname against the name specified in the client certificate
+            // --skip-hostname-check: Don't check the daemon's hostname against the name specified in the client certificate
             if ((Options & DockerComposeCommonFlags.SkipHostnameCheck) != 0)
                 yield return "--skip-hostname-check";
-            // If set, Compose will attempt to convert deploy keys in v3 files to their non-Swarm equivalent
+            // --compatibility: If set, Compose will attempt to convert deploy keys in v3 files to their non-Swarm equivalent
             if ((Options & DockerComposeCommonFlags.Compatibility) != 0)
                 yield return "--compatibility";
         }
