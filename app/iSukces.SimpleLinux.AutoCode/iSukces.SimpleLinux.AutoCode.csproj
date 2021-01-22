@@ -20,6 +20,21 @@
       <Compile Update="Generators\SingleTaskEnumsGenerator.cs">
         <DependentUpon>EnumsGenerator.cs</DependentUpon>
       </Compile>
+      <Compile Update="Generators\ShellEnumOptions.cs">
+        <DependentUpon>ShellEnumOptionsGenerator.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Generators\ParametrizedOption.ValueEncoder.cs">
+        <DependentUpon>ParametrizedOption.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Generators\ParametrizedOption.OptionValueProcessorKind.cs">
+        <DependentUpon>ParametrizedOption.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Generators\ParametrizedOption.OptionValueType.cs">
+        <DependentUpon>ParametrizedOption.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Generators\ParametrizedOption.OptionValueProcessorInput.cs">
+        <DependentUpon>ParametrizedOption.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

@@ -29,7 +29,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 if (item.TargetAssembly != assembly)
                     continue;
                 var csFile = new CsFile();
-                foreach (var ns in SimpleLinuxAutocodeGenerator.GetFileImportNamespaces())
+                foreach (var ns in AllGenerators.GetFileImportNamespaces())
                     csFile.AddImportNamespace(ns);
                 var privContext = new MyWrappedContext(csFile);
                 SingleTaskEnumsGenerator.CreateCode(privContext, item);

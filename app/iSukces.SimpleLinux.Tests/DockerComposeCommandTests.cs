@@ -56,5 +56,21 @@ namespace iSukces.SimpleLinux.Tests
             const string expected = "docker-compose up -d --remove-orphans --exit-code-from myservice";
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void T04_should_create_up_command_with_debug_level()
+        {
+            var cmd = new DockerComposeCommand
+            {
+                Option = new DockerComposeUpOptions()
+                    .WithDetach(),
+                Common = new DockerComposeCommonOptions()
+                    .WithLogLevel(LogLevelValues.Debug)
+            };
+            
+            var          actual   = cmd.GetCode();
+            const string expected = "docker-compose --log-level DEBUG up -d";
+            Assert.Equal(expected, actual);
+        }
     }
 }

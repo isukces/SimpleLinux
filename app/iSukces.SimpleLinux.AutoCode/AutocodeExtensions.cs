@@ -65,5 +65,13 @@ namespace iSukces.SimpleLinux.AutoCode
             if (string.IsNullOrEmpty(description)) return;
             writer.WriteLine("// " + description);
         }
+
+        public static string GetTypeName(this ITypeNameResolver res, NamespaceAndName typeName)
+        {
+            if (res is INamespaceContainer container)
+                if (container.IsKnownNamespace(typeName.Namespace))
+                    return typeName.Name;
+            return typeName.FullName;
+        }
     }
 }

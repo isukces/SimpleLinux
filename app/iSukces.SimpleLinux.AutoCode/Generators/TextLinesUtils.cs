@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
 {
-    internal sealed class TextLinesUtils
+    internal static class TextLinesUtils
     {
-        public static string[] SplitToLines(string text)
+        public static string[] SplitToLines(this string text)
         {
             var lines = text.Split('\r', '\n')
                 //.Where(a => a.Trim().Length > 0)
@@ -14,7 +14,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             return lines;
         }
 
-        public static int GetSplitColumn(string[] lines)
+        public static int GetSplitColumn(this string[] lines)
         {
             var dictionary = new Dictionary<int, int>();
             var spacesAtBegin = lines.Select(a =>

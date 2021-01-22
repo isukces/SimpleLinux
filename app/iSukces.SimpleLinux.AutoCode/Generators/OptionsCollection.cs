@@ -9,8 +9,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
     {
         public static OptionsCollection Parse(string text)
         {
-            var lines       = TextLinesUtils.SplitToLines(text);
-            var splitColumn = TextLinesUtils.GetSplitColumn(lines);
+            var lines       = text.SplitToLines();
+            var splitColumn = lines.GetSplitColumn();
 
             var                    result = new OptionsCollection();
             OptionsCollectionValue value  = null;

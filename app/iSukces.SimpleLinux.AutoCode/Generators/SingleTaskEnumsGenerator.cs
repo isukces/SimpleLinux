@@ -139,7 +139,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             optionsToStringCode.WriteLine("// generator : " + GetType().Name);
             if (!string.IsNullOrEmpty(conflictsCodeMethod))
                 optionsToStringCode.WriteLine($"{conflictsCodeMethod}({valueVariable});");
-            var fb = new FlagsBuilder(MyEnum);
+            var fb = new EnumFlagsBuilder(MyEnum);
             fb.AddFlagsAttribute(MyNamespace);
 
             var enumSource = from q in _item.Options.Values
@@ -193,20 +193,28 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
                 var str = MyStruct;
 
-                var kind = string.IsNullOrEmpty(p.Name) ? Kind.SingleValue : Kind.Dictionary;
-                var prop = str.AddProperty(option.GetCsName(), p.Encoder.GetPropertyType(kind))
+                var kind = string.IsNullOrEmpty(p.Name)
+                    ? ParametrizedOption.OptionValueProcessorKind.SingleValue
+                    : ParametrizedOption.OptionValueProcessorKind.Dictionary;
+
+                var cre = new ShellEnumOptionsGenerator(option.GetCsName() + "Values", MyNamespace,
+                    p.Encoder?.EnumValues);
+                cre.MakeEnumIfNecessary();
+                cre.MakeExtensionMethod(ExtensionsClass);
+
+                var prop = str.AddProperty(option.GetCsName(),
+                        p.Encoder.GetPropertyTypeName(kind, str, cre.TypeName))
                     .WithNoEmitField()
                     .WithMakeAutoImplementIfPossible();
                 prop.Description = option.FullDescription;
-                if (kind == Kind.Dictionary)
+                if (kind == ParametrizedOption.OptionValueProcessorKind.Dictionary)
                     prop.ConstValue = $"new {prop.Type}()";
 
                 {
-
                     var key           = p.Name?.ToLower();
                     var value         = p.Value.ToLower();
                     var setExpression = prop.Name;
-                    if (kind == Kind.Dictionary)
+                    if (kind == ParametrizedOption.OptionValueProcessorKind.Dictionary)
                         setExpression += "[" + key + "]";
 
                     var cs = new CsCodeWriter()
@@ -215,31 +223,34 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                     var fluentMethod = str.AddMethod("With" + prop.Name, str.Name)
                         .WithBody(cs);
 
-                    if (kind == Kind.Dictionary)
+                    if (kind == ParametrizedOption.OptionValueProcessorKind.Dictionary)
                         fluentMethod.AddParam<string>(key, str);
-                    fluentMethod.AddParam(value, str.GetTypeName(p.Encoder.ValueType));
+                    var par = fluentMethod.AddParam(value, p.Encoder.ValueType.GetTypeName(str, cre.TypeName));
+                    par.Description          = p.ValueDescription;
                     fluentMethod.Description = prop.Description;
                 }
+
                 switch (kind)
                 {
-                    case Kind.Dictionary:
+                    case ParametrizedOption.OptionValueProcessorKind.Dictionary:
                     {
-               
+                        if (cre.HasEnum)
+                            throw new NotSupportedException();
                         apps.Add((cc, re) =>
                         {
                             cc.WriteDescriptionComment(option);
                             cc.Open("foreach(var pair in " + prop.Name + ")");
                             cc.WriteLine("yield return " + option.AnyWithMinus.CsEncode() + ';');
-                            var expression = p.Encoder.Convert("pair.Value", re);
+                            var input      = new ParametrizedOption.OptionValueProcessorInput("pair.Value", kind, re);
+                            var expression = p.Encoder.Convert(input);
                             cc.WriteLine($"var value = {expression};");
                             cc.WriteLine("yield return $\"{pair.Key}={value}\";");
                             cc.Close();
                         });
                     }
                         break;
-                    case Kind.SingleValue:
+                    case ParametrizedOption.OptionValueProcessorKind.SingleValue:
                     {
-                        
                         apps.Add((cc, resolver) =>
                         {
                             cc.WriteDescriptionComment(option);
@@ -247,7 +258,11 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                             cc.Open($"if ({condition})");
                             {
                                 cc.WriteLine("yield return " + option.AnyWithMinus.CsEncode() + ';');
-                                var expression = p.Encoder.Convert(prop.Name, resolver);
+                                var ex = prop.Name;
+                                if (prop.Type.EndsWith("?"))
+                                    ex += ".Value";
+                                var input = new ParametrizedOption.OptionValueProcessorInput(ex, kind, resolver);
+                                var expression = p.Encoder.Convert(input);
                                 cc.WriteLine($"yield return {expression};");
                             }
                             cc.Close();

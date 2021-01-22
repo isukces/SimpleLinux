@@ -7,9 +7,9 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
     /// <summary>
     ///     Helps to create enums with [Flag]
     /// </summary>
-    internal class FlagsBuilder
+    internal class EnumFlagsBuilder
     {
-        public FlagsBuilder(CsEnum target, string none = "None")
+        public EnumFlagsBuilder(CsEnum target, string none = "None")
         {
             _target = target;
             if (!string.IsNullOrEmpty(none))

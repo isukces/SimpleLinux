@@ -2,6 +2,7 @@
 using iSukces.SimpleLinux;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 
 namespace iSukces.SimpleLinux.Docker
@@ -129,6 +130,12 @@ namespace iSukces.SimpleLinux.Docker
             // --remove-orphans: Remove containers for services not defined in the Compose file.
             if ((Options & DockerComposeUpFlags.RemoveOrphans) != 0)
                 yield return "--remove-orphans";
+            // -t, --timeout =TIMEOUT: Use this timeout in seconds for container shutdown when attached or when containers are already running. (default: 10)
+            if (!(Timeout is null))
+            {
+                yield return "--timeout";
+                yield return Timeout.Value.ToString(CultureInfo.InvariantCulture);
+            }
             // --exit-code-from =SERVICE: Return the exit code of the selected service container. Implies --abort-on-container-exit.
             if (!string.IsNullOrEmpty(ExitCodeFrom))
             {
@@ -139,7 +146,7 @@ namespace iSukces.SimpleLinux.Docker
             foreach(var pair in Scale)
             {
                 yield return "--scale";
-                var value = pair.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                var value = pair.Value.ToString(CultureInfo.InvariantCulture);
                 yield return $"{pair.Key}={value}";
             }
         }
@@ -182,7 +189,7 @@ namespace iSukces.SimpleLinux.Docker
         /// <summary>
         /// --exit-code-from =SERVICE: Return the exit code of the selected service container. Implies --abort-on-container-exit.
         /// </summary>
-        /// <param name="service"></param>
+        /// <param name="service">service name</param>
         public DockerComposeUpOptions WithExitCodeFrom(string service)
         {
             ExitCodeFrom = service;
@@ -254,7 +261,22 @@ namespace iSukces.SimpleLinux.Docker
             return this;
         }
 
+        /// <summary>
+        /// -t, --timeout =TIMEOUT: Use this timeout in seconds for container shutdown when attached or when containers are already running. (default: 10)
+        /// </summary>
+        /// <param name="timeout">timeout in seconds</param>
+        public DockerComposeUpOptions WithTimeout(int timeout)
+        {
+            Timeout = timeout;
+            return this;
+        }
+
         public DockerComposeUpFlags Options { get; set; }
+
+        /// <summary>
+        /// -t, --timeout =TIMEOUT: Use this timeout in seconds for container shutdown when attached or when containers are already running. (default: 10)
+        /// </summary>
+        public int? Timeout { get; set; }
 
         /// <summary>
         /// --exit-code-from =SERVICE: Return the exit code of the selected service container. Implies --abort-on-container-exit.

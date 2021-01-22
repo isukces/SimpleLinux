@@ -59,7 +59,13 @@ namespace iSukces.SimpleLinux.AutoCode
                               keys in v3 files to their non-Swarm equivalent
 ";
             var item = enumsGenerator
-                .WithEnum("Docker.DockerComposeCommon", optionsToParse);
+                .WithEnum("Docker.DockerComposeCommon", optionsToParse)
+                .WithStringValue("--file", "alternate compose file")
+                // --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+                .WithEnumValue("--log-level", "DEBUG, INFO, WARNING, ERROR, CRITICAL".Split(","))
+                .WithStringValue("--project-name", "alternate project name")
+                .WithStringValue("--host", "daemon socket to connect to")
+                .WithStringValue("--project-directory", "alternate working directory");
             CommonSetup(item);
         }
 
@@ -99,8 +105,9 @@ namespace iSukces.SimpleLinux.AutoCode
                                `scale` setting in the Compose file if present.";
             var item = enumsGenerator
                 .WithEnum("Docker.DockerComposeUp", optionsToParse)
-                .WithInteger("--scale")
-                .WithString("--exit-code-from");
+                .WithIntegerValue("--scale")
+                .WithIntegerValue("--timeout", "timeout in seconds")
+                .WithStringValue("--exit-code-from", "service name");
             item.Tags["name"] = "up";
             CommonSetup(item);
         }

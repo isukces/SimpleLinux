@@ -37,24 +37,39 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             return this;
         }
 
-        public EnumsGeneratorItem WithInteger(string option)
+        public EnumsGeneratorItem WithEnumValue(string option, string[] enumValues)
         {
             var el = Options.GetByOption(option);
-            el.Parameter = el.Parameter.WithEncoder(OptionValueProcessor.IntProcessor);
+            el.Parameter = el.Parameter.WithEncoder(ParametrizedOption.ValueEncoder.EnumProcessor(enumValues));
+            /*
+            if (!string.IsNullOrEmpty(valueDescription))
+                el.Parameter = el.Parameter.WithValueDescription(valueDescription);
+            */
             return this;
         }
-        public EnumsGeneratorItem WithString(string option)
+
+        public EnumsGeneratorItem WithIntegerValue(string option, string valueDescription = null)
         {
             var el = Options.GetByOption(option);
-            el.Parameter = el.Parameter.WithEncoder(OptionValueProcessor.StringProcessor);
+            el.Parameter = el.Parameter.WithEncoder(ParametrizedOption.ValueEncoder.IntEncoder);
+            if (!string.IsNullOrEmpty(valueDescription))
+                el.Parameter = el.Parameter.WithValueDescription(valueDescription);
             return this;
         }
-        
 
 
         public EnumsGeneratorItem WithInterface<T>()
         {
             ImplementedInterfaces.Add(typeof(T));
+            return this;
+        }
+
+        public EnumsGeneratorItem WithStringValue(string option, string valueDescription = null)
+        {
+            var el = Options.GetByOption(option);
+            el.Parameter = el.Parameter.WithEncoder(ParametrizedOption.ValueEncoder.StringEncoder);
+            if (!string.IsNullOrEmpty(valueDescription))
+                el.Parameter = el.Parameter.WithValueDescription(valueDescription);
             return this;
         }
 

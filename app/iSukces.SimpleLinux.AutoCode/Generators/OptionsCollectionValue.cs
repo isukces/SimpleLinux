@@ -1,4 +1,6 @@
 ﻿using System;
+using iSukces.Code;
+using iSukces.Code.Interfaces;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
 {
@@ -85,5 +87,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 return ToString().AppendText(Description, ": ");
             }
         }
+
+       
     }
 }

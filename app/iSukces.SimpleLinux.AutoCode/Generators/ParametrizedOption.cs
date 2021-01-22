@@ -3,14 +3,16 @@
 namespace iSukces.SimpleLinux.AutoCode.Generators
 {
     [ImmutableObject(true)]
-    public class ParametrizedOption
+    public partial class ParametrizedOption
     {
-        public ParametrizedOption(string value, string name=null, OptionValueProcessor encoder = null)
+        public ParametrizedOption(string value, string name = null, ValueEncoder encoder = null,
+            string valueDescription = null)
         {
             // --scale SERVICE=NUM
-            Name    = name?.Trim();
-            Value   = value?.Trim();
-            Encoder = encoder;
+            Name         = name?.Trim();
+            Value        = value?.Trim();
+            Encoder      = encoder;
+            ValueDescription = valueDescription;
         }
 
         public override string ToString()
@@ -21,14 +23,19 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             return toString;
         }
 
-        public ParametrizedOption WithEncoder(OptionValueProcessor encoder)
+        public ParametrizedOption WithEncoder(ValueEncoder encoder)
         {
-            return new ParametrizedOption(Value, Name, encoder);
+            return new ParametrizedOption(Value, Name, encoder, ValueDescription);
         }
 
-
-        public string               Name    { get; }
-        public string               Value   { get; }
-        public OptionValueProcessor Encoder { get; }
+        public ParametrizedOption WithValueDescription(string valueDescription)
+        {
+            return new ParametrizedOption(Value, Name, Encoder, valueDescription);
+        }
+        
+        public string               Name         { get; }
+        public string               Value        { get; }
+        public ValueEncoder Encoder      { get; }
+        public string               ValueDescription { get; }
     }
 }

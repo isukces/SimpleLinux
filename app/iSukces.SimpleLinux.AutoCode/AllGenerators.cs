@@ -6,11 +6,11 @@ using iSukces.Code.AutoCode;
 namespace iSukces.SimpleLinux.AutoCode
 {
     /// <summary>
-    ///     Główna fasada generatora kodu
+    ///     Aggregating generator
     /// </summary>
-    internal class SimpleLinuxAutocodeGenerator : AutoCodeGenerator
+    internal class AllGenerators : AutoCodeGenerator
     {
-        public SimpleLinuxAutocodeGenerator() : base(GetFilenameProvider())
+        public AllGenerators() : base(GetFilenameProvider())
         {
         }
 
@@ -22,7 +22,7 @@ namespace iSukces.SimpleLinux.AutoCode
         /// <returns></returns>
         public static IAssemblyBaseDirectoryProvider GetDirectoryProvider()
         {
-            return SlnAssemblyBaseDirectoryProvider.Make<SimpleLinuxAutocodeGenerator>("SimpleLinux.sln");
+            return SlnAssemblyBaseDirectoryProvider.Make<AllGenerators>("SimpleLinux.sln");
         }
 
 
@@ -43,6 +43,7 @@ namespace iSukces.SimpleLinux.AutoCode
             yield return "System.Collections.Generic";
             yield return "iSukces.SimpleLinux";
             yield return "System.Runtime.CompilerServices";
+            yield return "System.Globalization";
 
         }
         public void Build()
