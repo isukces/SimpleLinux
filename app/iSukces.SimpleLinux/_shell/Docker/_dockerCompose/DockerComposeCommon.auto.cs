@@ -142,7 +142,7 @@ namespace iSukces.SimpleLinux.Docker
 
         public DockerComposeCommonOptions WithCompatibility(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.Compatibility, value);
             return this;
         }
@@ -173,7 +173,7 @@ namespace iSukces.SimpleLinux.Docker
         /// --log-level =LEVEL: Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         /// </summary>
         /// <param name="level"></param>
-        public DockerComposeCommonOptions WithLogLevel(DockerComposeCommonLogLevelValues level)
+        public DockerComposeCommonOptions WithLogLevel(DockerComposeCommonLogLevelValues? level)
         {
             // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             LogLevel = level;
@@ -182,7 +182,7 @@ namespace iSukces.SimpleLinux.Docker
 
         public DockerComposeCommonOptions WithNoAnsi(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.NoAnsi, value);
             return this;
         }
@@ -211,14 +211,14 @@ namespace iSukces.SimpleLinux.Docker
 
         public DockerComposeCommonOptions WithSkipHostnameCheck(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.SkipHostnameCheck, value);
             return this;
         }
 
         public DockerComposeCommonOptions WithTls(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.Tls, value);
             return this;
         }
@@ -258,21 +258,21 @@ namespace iSukces.SimpleLinux.Docker
 
         public DockerComposeCommonOptions WithTlsverify(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.Tlsverify, value);
             return this;
         }
 
         public DockerComposeCommonOptions WithVerbose(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.Verbose, value);
             return this;
         }
 
         public DockerComposeCommonOptions WithVersion(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.Version, value);
             return this;
         }
@@ -325,12 +325,33 @@ namespace iSukces.SimpleLinux.Docker
     public enum DockerComposeCommonFlags
     {
         None = 0,
+        /// <summary>
+        /// --verbose: Show more output
+        /// </summary>
         Verbose = 1,
+        /// <summary>
+        /// --no-ansi: Do not print ANSI control characters
+        /// </summary>
         NoAnsi = 2,
+        /// <summary>
+        /// -v, --version: Print version and exit
+        /// </summary>
         Version = 4,
+        /// <summary>
+        /// --tls: Use TLS; implied by --tlsverify
+        /// </summary>
         Tls = 8,
+        /// <summary>
+        /// --tlsverify: Use TLS and verify the remote
+        /// </summary>
         Tlsverify = 16,
+        /// <summary>
+        /// --skip-hostname-check: Don't check the daemon's hostname against the name specified in the client certificate
+        /// </summary>
         SkipHostnameCheck = 32,
+        /// <summary>
+        /// --compatibility: If set, Compose will attempt to convert deploy keys in v3 files to their non-Swarm equivalent
+        /// </summary>
         Compatibility = 64
     }
 

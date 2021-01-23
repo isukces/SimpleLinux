@@ -7,6 +7,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
     {
         public static string[] SplitToLines(this string text)
         {
+            if (text is null)
+                return new string[0];
             var lines = text.Split('\r', '\n')
                 //.Where(a => a.Trim().Length > 0)
                 .Where(text => !string.IsNullOrWhiteSpace(text))

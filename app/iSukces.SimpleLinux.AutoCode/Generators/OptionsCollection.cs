@@ -9,10 +9,13 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
     {
         public static OptionsCollection Parse(string text)
         {
+            var result      = new OptionsCollection();
             var lines       = text.SplitToLines();
+            if (lines.Length == 0)
+                return result;
             var splitColumn = lines.GetSplitColumn();
 
-            var                    result = new OptionsCollection();
+           
             OptionsCollectionValue value  = null;
             foreach (var line in lines)
             {

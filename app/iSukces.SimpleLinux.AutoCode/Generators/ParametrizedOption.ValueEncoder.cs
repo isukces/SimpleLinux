@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using iSukces.Code.Interfaces;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
@@ -49,35 +50,71 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 return src.Expression;
             }
 
-            public string GetCondition(string expression)
+
+            private static bool IsCollectionType(Type def)
             {
-                if (ValueType.FixedType == typeof(string))
-                    return $"!string.IsNullOrEmpty({expression})";
+                return def == typeof(List<>)
+                       || def == typeof(IReadOnlyList<>)
+                       || def == typeof(IList<>)
+                       || def == typeof(IReadOnlyCollection<>)
+                       || def == typeof(ICollection<>);
+            }
+
+            public string GetCondition(string expression, bool isCollection)
+            {
+                var type = ValueType.FixedType;
+                if (type == typeof(string)) return $"!string.IsNullOrEmpty({expression})";
+                if (isCollection)
+                {
+                    var def = type.GetGenericTypeDefinition();
+                    if (IsCollectionType(def))
+                        return $"!({expression} is null) && {expression}.Count > 0";
+                }
+
                 return $"!({expression} is null)";
             }
 
-            public string GetPropertyTypeName(OptionValueProcessorKind kind, ITypeNameResolver res,
+            public PropInfo GetPropertyTypeName(OptionValueProcessorKind kind, ITypeNameResolver res,
                 NamespaceAndName enumTypeName)
             {
-                var v = ValueType.FixedType;
+                var    v = ValueType.FixedType;
+                string elementName;
                 if (v != null)
+                {
                     switch (kind)
                     {
+                        case OptionValueProcessorKind.List:
                         case OptionValueProcessorKind.Dictionary:
-                        {
-                            v = typeof(Dictionary<,>).MakeGenericType(typeof(string), v);
-                            return res.GetTypeName(v);
-                        }
+                            elementName = res.GetTypeName(v);
+                            break;
                         case OptionValueProcessorKind.SingleValue:
                             if (v.IsValueType)
                                 v = typeof(Nullable<>).MakeGenericType(v);
-                            return res.GetTypeName(v);
+                            elementName = res.GetTypeName(v);
+                            break;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                     }
+                }
+                else
+                {
+                    var suffix = kind == OptionValueProcessorKind.SingleValue ? "?" : ";";
+                    elementName = res.GetTypeName(enumTypeName) + suffix;
+                }
 
-                var suffix = kind == OptionValueProcessorKind.SingleValue ? "?" : ";";
-                return res.GetTypeName(enumTypeName) + suffix;
+                var tqq = new PropInfo(elementName);
+
+                switch (kind)
+                {
+                    case OptionValueProcessorKind.Dictionary:
+                        return tqq.MakeDict(res);
+                    case OptionValueProcessorKind.SingleValue:
+                        return tqq;
+                    case OptionValueProcessorKind.List:
+                        return tqq.MakeList(res);
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+                }
             }
 
             public ShellEnumOptions EnumValues { get; }
@@ -91,6 +128,39 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
             public static readonly ValueEncoder StringEncoder
                 = new ValueEncoder(OptionValueType.Make<string>(), ConvertToString);
+
+            public class PropInfo
+            {
+                public PropInfo(string propertyType)
+                {
+                    PropertyType = propertyType;
+                    ElementType  = propertyType;
+                }
+
+                public PropInfo MakeDict(ITypeNameResolver resolver)
+                {
+                    var type = resolver.GetTypeName<IDictionary<int, int>>().Split('<').First();
+                    var init = resolver.GetTypeName<Dictionary<int, int>>().Split('<').First();
+                    PropertyInit = $"new {init}<string, {ElementType}>()";
+                    PropertyType = $"{type}<string, {ElementType}>";
+                    return this;
+                }
+
+                public PropInfo MakeList(ITypeNameResolver resolver)
+                {
+                    var type = resolver.GetTypeName<IList<int>>().Split('<').First();
+                    var init = resolver.GetTypeName<List<int>>().Split('<').First();
+                    PropertyInit = $"new {init}<{ElementType}>()";
+                    PropertyType = $"{type}<{ElementType}>";
+                    return this;
+                }
+
+                public string ElementType { get; }
+
+                public string PropertyType { get; set; }
+
+                public string PropertyInit { get; set; }
+            }
         }
     }
 }

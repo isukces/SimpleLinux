@@ -1,6 +1,4 @@
 ﻿using System;
-using iSukces.Code;
-using iSukces.Code.Interfaces;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
 {
@@ -8,12 +6,12 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
     {
         public string GetCsName()
         {
-            var candidate = Parameter?.OtherName?.Camelise();
+            var candidate = Parameter?.PropertyName?.Camelise();
             if (!string.IsNullOrEmpty(candidate))
                 return candidate;
             var name = string.IsNullOrEmpty(LongOption) ? ShortOption : LongOption;
-            name= name.Camelise();
-            return name ;
+            name = name.Camelise();
+            return name;
         }
 
         public bool Match(string option)
@@ -58,10 +56,17 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             var parts = optionPart.Split('=');
             if (parts.Length > 2) throw new NotSupportedException();
 
-            Parameter = parts.Length > 1 
-                ? new ParametrizedOption(parts[1].Trim(), parts[0].Trim()) 
-                : new ParametrizedOption(parts[0].Trim());
-            
+            if (parts.Length > 1)
+                Parameter = new ParametrizedOptionBuilder
+                {
+                    Value = parts[1].Trim(),
+                    Name  = parts[0].Trim()
+                }.Build();
+            else
+                Parameter = new ParametrizedOptionBuilder
+                {
+                    Value = parts[0].Trim(),
+                }.Build();
         }
 
         public string AnyWithMinus
@@ -95,16 +100,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         public string ShortOptionWithMinus => string.IsNullOrEmpty(ShortOption) ? null : "-" + ShortOption;
 
-        public ParametrizedOption Parameter       { get; set; }
+        public ParametrizedOption Parameter { get; set; }
 
-        public string FullDescription
-        {
-            get
-            {
-                return ToString().AppendText(Description, ": ");
-            }
-        }
-
-       
+        public string FullDescription => ToString().AppendText(Description, ": ");
     }
 }

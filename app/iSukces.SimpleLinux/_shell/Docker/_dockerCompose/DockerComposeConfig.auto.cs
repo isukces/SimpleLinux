@@ -85,35 +85,35 @@ namespace iSukces.SimpleLinux.Docker
 
         public DockerComposeConfigOptions WithNoInterpolate(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeConfigFlags.NoInterpolate, value);
             return this;
         }
 
         public DockerComposeConfigOptions WithQuiet(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeConfigFlags.Quiet, value);
             return this;
         }
 
         public DockerComposeConfigOptions WithResolveImageDigests(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeConfigFlags.ResolveImageDigests, value);
             return this;
         }
 
         public DockerComposeConfigOptions WithServices(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeConfigFlags.Services, value);
             return this;
         }
 
         public DockerComposeConfigOptions WithVolumes(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeConfigFlags.Volumes, value);
             return this;
         }
@@ -136,10 +136,25 @@ namespace iSukces.SimpleLinux.Docker
     public enum DockerComposeConfigFlags
     {
         None = 0,
+        /// <summary>
+        /// --resolve-image-digests: Pin image tags to digests.
+        /// </summary>
         ResolveImageDigests = 1,
+        /// <summary>
+        /// --no-interpolate: Don't interpolate environment variables.
+        /// </summary>
         NoInterpolate = 2,
+        /// <summary>
+        /// -q, --quiet: Only validate the configuration, don't print anything.
+        /// </summary>
         Quiet = 4,
+        /// <summary>
+        /// --services: Print the service names, one per line.
+        /// </summary>
         Services = 8,
+        /// <summary>
+        /// --volumes: Print the volume names, one per line.
+        /// </summary>
         Volumes = 16
     }
 }

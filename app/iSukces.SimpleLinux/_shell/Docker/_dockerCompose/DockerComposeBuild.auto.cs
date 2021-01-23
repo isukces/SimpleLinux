@@ -80,49 +80,49 @@ namespace iSukces.SimpleLinux.Docker
 
         public DockerComposeBuildOptions WithCompress(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeBuildFlags.Compress, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithForceRm(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeBuildFlags.ForceRm, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithNoCache(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeBuildFlags.NoCache, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithNoRm(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeBuildFlags.NoRm, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithParallel(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeBuildFlags.Parallel, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithPull(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeBuildFlags.Pull, value);
             return this;
         }
 
         public DockerComposeBuildOptions WithQuiet(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:344
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
             Flags = Flags.SetOrClear(DockerComposeBuildFlags.Quiet, value);
             return this;
         }
@@ -140,12 +140,33 @@ namespace iSukces.SimpleLinux.Docker
     public enum DockerComposeBuildFlags
     {
         None = 0,
+        /// <summary>
+        /// --compress: Compress the build context using gzip.
+        /// </summary>
         Compress = 1,
+        /// <summary>
+        /// --force-rm: Always remove intermediate containers.
+        /// </summary>
         ForceRm = 2,
+        /// <summary>
+        /// --no-cache: Do not use cache when building the image.
+        /// </summary>
         NoCache = 4,
+        /// <summary>
+        /// --no-rm: Do not remove intermediate containers after a successful build.
+        /// </summary>
         NoRm = 8,
+        /// <summary>
+        /// --parallel: Build images in parallel.
+        /// </summary>
         Parallel = 16,
+        /// <summary>
+        /// --pull: Always attempt to pull a newer version of the image.
+        /// </summary>
         Pull = 32,
+        /// <summary>
+        /// -q, --quiet: Don't print anything to `STDOUT`.
+        /// </summary>
         Quiet = 64
     }
 }

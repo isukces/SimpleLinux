@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="iSukces.Code" Version="1.0.21012.168" />
+      <PackageReference Include="iSukces.Code" Version="1.0.21023.170" />
     </ItemGroup>
 
     <ItemGroup>

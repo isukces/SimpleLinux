@@ -49,7 +49,7 @@ namespace iSukces.SimpleLinux.Docker
         /// --index =index: index of the container if there are multiple instances of a service [default: 1]
         /// </summary>
         /// <param name="index"></param>
-        public DockerComposePortOptions WithIndex(int index)
+        public DockerComposePortOptions WithIndex(int? index)
         {
             // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             Index = index;
@@ -60,7 +60,7 @@ namespace iSukces.SimpleLinux.Docker
         /// --protocol =proto: tcp or udp [default: tcp]
         /// </summary>
         /// <param name="proto"></param>
-        public DockerComposePortOptions WithProtocol(DockerComposePortProtocolValues proto)
+        public DockerComposePortOptions WithProtocol(DockerComposePortProtocolValues? proto)
         {
             // generator : SingleTaskEnumsGenerator.CreateNamedParameters:225
             Protocol = proto;

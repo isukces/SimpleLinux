@@ -5,7 +5,8 @@
         public enum OptionValueProcessorKind
         {
             SingleValue,
-            Dictionary
+            Dictionary,
+            List
         }
     }
 }

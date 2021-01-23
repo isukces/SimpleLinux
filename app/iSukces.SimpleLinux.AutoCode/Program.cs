@@ -11,6 +11,7 @@ namespace iSukces.SimpleLinux.AutoCode
                 .WithTargetAssembly<Sha1Code>();
 
             DockerComposeSetup.Add(enumsGenerator);
+            UnzipSetup.Add(enumsGenerator);
             return enumsGenerator;
         }
 
@@ -20,6 +21,7 @@ namespace iSukces.SimpleLinux.AutoCode
 
             var gen = new AllGenerators();
             gen.WithGenerator(GetEnumsGenerator());
+            gen.WithGenerator<Code.AutoCode.Generators.BuilderForTypeGenerator>();
             gen.Build();
         }
     }

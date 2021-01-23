@@ -58,7 +58,8 @@ namespace iSukces.SimpleLinux.AutoCode
             };
             Assemblies = new[]
             {
-                typeof(Sha1Code).Assembly
+                typeof(Sha1Code).Assembly,
+                typeof(AllGenerators).Assembly
             };
 
             foreach (var i in Assemblies)
