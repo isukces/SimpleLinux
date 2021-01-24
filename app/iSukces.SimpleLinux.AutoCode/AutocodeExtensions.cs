@@ -31,7 +31,7 @@ namespace iSukces.SimpleLinux.AutoCode
             var sb    = new StringBuilder(x.Length);
             foreach (var i in x)
             {
-                if (i == ' ' || i == '-'|| i == '_')
+                if (i == ' ' || i == '-' || i == '_')
                 {
                     upper = true;
                     continue;
@@ -47,6 +47,25 @@ namespace iSukces.SimpleLinux.AutoCode
             return sb.ToString();
         }
 
+        public static string GetTypeName(this ITypeNameResolver res, NamespaceAndName typeName)
+        {
+            if (res is INamespaceContainer container)
+                if (container.IsKnownNamespace(typeName.Namespace))
+                    return typeName.Name;
+            return typeName.FullName;
+        }
+
+        public static string CodeHasElements(this string expression,string countProperty="Count")
+        {
+            var nn = CodeIsNotNull(expression);
+            return $"{nn} && {expression}.{countProperty} > 0";
+        }
+        
+        public static string CodeIsNotNull(this string expression)
+        {
+            return $"!({expression} is null)";
+        }
+
         public static void Swap<T>(ref T first, ref T second)
         {
             var tmp = first;
@@ -58,6 +77,16 @@ namespace iSukces.SimpleLinux.AutoCode
         {
             return x.ToString(CultureInfo.InvariantCulture);
         }
+        
+        public static string ToInv(this long x)
+        {
+            return x.ToString(CultureInfo.InvariantCulture);
+        }
+        
+        public static string ToInv(this ulong x)
+        {
+            return x.ToString(CultureInfo.InvariantCulture);
+        }
 
         public static void WriteDescriptionComment(this CsCodeWriter writer, OptionsCollectionValue option)
         {
@@ -66,12 +95,13 @@ namespace iSukces.SimpleLinux.AutoCode
             writer.WriteLine("// " + description);
         }
 
-        public static string GetTypeName(this ITypeNameResolver res, NamespaceAndName typeName)
+        public static CsCodeWriter SingleLineForeach(this CsCodeWriter cs, string variable, string collection, string statement)
         {
-            if (res is INamespaceContainer container)
-                if (container.IsKnownNamespace(typeName.Namespace))
-                    return typeName.Name;
-            return typeName.FullName;
+            cs.WriteLine($"foreach (var {variable} in {collection})");
+            cs.IncIndent();
+            cs.WriteLine(statement);
+            cs.DecIndent();
+            return cs;
         }
     }
 }

@@ -156,37 +156,57 @@ namespace iSukces.SimpleLinux.Docker
             return GetCodeItems();
         }
 
+        /// <summary>
+        /// --abort-on-container-exit: Stops all containers if any container was stopped. Incompatible with --detach.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithAbortOnContainerExit(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.AbortOnContainerExit, value);
             return this;
         }
 
+        /// <summary>
+        /// --always-recreate-deps: Recreate dependent containers. Incompatible with --no-recreate.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithAlwaysRecreateDeps(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.AlwaysRecreateDeps, value);
             return this;
         }
 
+        /// <summary>
+        /// --attach-dependencies: Attach to dependent containers.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithAttachDependencies(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.AttachDependencies, value);
             return this;
         }
 
+        /// <summary>
+        /// --build: Build images before starting containers.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithBuild(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.Build, value);
             return this;
         }
 
+        /// <summary>
+        /// -d, --detach: Detached mode: Run containers in the background, print new container names. Incompatible with --abort-on-container-exit.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithDetach(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.Detach, value);
             return this;
         }
@@ -202,65 +222,101 @@ namespace iSukces.SimpleLinux.Docker
             return this;
         }
 
+        /// <summary>
+        /// --force-recreate: Recreate containers even if their configuration and image haven't changed.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithForceRecreate(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.ForceRecreate, value);
             return this;
         }
 
+        /// <summary>
+        /// --no-build: Don't build an image, even if it's missing.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithNoBuild(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.NoBuild, value);
             return this;
         }
 
+        /// <summary>
+        /// --no-color: Produce monochrome output.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithNoColor(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.NoColor, value);
             return this;
         }
 
+        /// <summary>
+        /// --no-deps: Don't start linked services.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithNoDeps(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.NoDeps, value);
             return this;
         }
 
+        /// <summary>
+        /// --no-recreate: If containers already exist, don't recreate them. Incompatible with --force-recreate and --renew-anon-volumes.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithNoRecreate(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.NoRecreate, value);
             return this;
         }
 
+        /// <summary>
+        /// --no-start: Don't start the services after creating them.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithNoStart(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.NoStart, value);
             return this;
         }
 
+        /// <summary>
+        /// --quiet-pull: Pull without printing progress information
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithQuietPull(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.QuietPull, value);
             return this;
         }
 
+        /// <summary>
+        /// --remove-orphans: Remove containers for services not defined in the Compose file.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithRemoveOrphans(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.RemoveOrphans, value);
             return this;
         }
 
+        /// <summary>
+        /// -V, --renew-anon-volumes: Recreate anonymous volumes instead of retrieving data from the previous containers.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeUpOptions WithRenewAnonVolumes(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeUpFlags.RenewAnonVolumes, value);
             return this;
         }
@@ -313,7 +369,7 @@ namespace iSukces.SimpleLinux.Docker
     }
 
     [Flags]
-    public enum DockerComposeUpFlags
+    public enum DockerComposeUpFlags: short
     {
         None = 0,
         /// <summary>

@@ -10,5 +10,7 @@ namespace iSukces.SimpleLinux
         }
 
         public bool Sudo { get; set; }
+
+        public LinuxStream Output { get; set; }
     }
 }

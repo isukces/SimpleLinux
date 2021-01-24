@@ -1,23 +1,22 @@
 ﻿using System.ComponentModel;
-using iSukces.Code.Interfaces;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
 {
-    [ImmutableObject(true)]
+    [ImmutableObject(false)]
+    [StringProperty("Name")]
+    [StringProperty("Value")]
+    [StringProperty("ValueDescription")]
+    [StringProperty("PropertyName")]
     public partial class ParametrizedOption
     {
-        public ParametrizedOption(string value, string name, ValueEncoder encoder,
-            string valueDescription, string propertyName, bool isCollection)
+
+        public ParametrizedOption(string value, string name=null)
         {
             // --scale SERVICE=NUM
             if (value == "\"*\"")
                 value = "optionValue";
             Name             = name?.Trim();
             Value            = value?.Trim();
-            Encoder          = encoder;
-            ValueDescription = valueDescription;
-            PropertyName     = propertyName;
-            IsCollection     = isCollection;
         }
 
         public override string ToString()
@@ -32,28 +31,18 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         public ParametrizedOption WithEncoder(ValueEncoder encoder)
         {
-            return new ParametrizedOptionBuilder(this)
-                .WithEncoder(encoder)
-                .Build();
+            Encoder = encoder;
+            return this;
         }
 
         public ParametrizedOption WithValueDescription(string valueDescription)
         {
-            return new ParametrizedOptionBuilder(this)
-                .WithValueDescription(valueDescription)
-                .Build();
+            ValueDescription = valueDescription;
+            return this;
         }
-
-        public string       Name             { get; }
-        public string       Value            { get; }
-        public ValueEncoder Encoder          { get; }
-        public string       ValueDescription { get; }
-        public string       PropertyName     { get; }
-        public bool         IsCollection     { get; }
-    }
-
-    [Auto.BuilderForTypeAttribute(typeof(ParametrizedOption))]
-    public sealed partial class ParametrizedOptionBuilder
-    {
+ 
+        public ValueEncoder Encoder          { get; set; }
+ 
+        public bool         IsCollection     { get; set; }
     }
 }

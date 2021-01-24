@@ -83,37 +83,57 @@ namespace iSukces.SimpleLinux.Docker
             return this;
         }
 
+        /// <summary>
+        /// --no-interpolate: Don't interpolate environment variables.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeConfigOptions WithNoInterpolate(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeConfigFlags.NoInterpolate, value);
             return this;
         }
 
+        /// <summary>
+        /// -q, --quiet: Only validate the configuration, don't print anything.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeConfigOptions WithQuiet(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeConfigFlags.Quiet, value);
             return this;
         }
 
+        /// <summary>
+        /// --resolve-image-digests: Pin image tags to digests.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeConfigOptions WithResolveImageDigests(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeConfigFlags.ResolveImageDigests, value);
             return this;
         }
 
+        /// <summary>
+        /// --services: Print the service names, one per line.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeConfigOptions WithServices(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeConfigFlags.Services, value);
             return this;
         }
 
+        /// <summary>
+        /// --volumes: Print the volume names, one per line.
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeConfigOptions WithVolumes(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeConfigFlags.Volumes, value);
             return this;
         }
@@ -133,7 +153,7 @@ namespace iSukces.SimpleLinux.Docker
     }
 
     [Flags]
-    public enum DockerComposeConfigFlags
+    public enum DockerComposeConfigFlags: byte
     {
         None = 0,
         /// <summary>

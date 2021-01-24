@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using iSukces.Code;
 using JetBrains.Annotations;
@@ -17,15 +16,11 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         public FileInfo GetFileName(DirectoryInfo projectDir)
         {
-            var parts = TypeName.Split('+');
-            var f     = parts.First().Split('.');
-            var l     = parts.Last().Split('.');
-
             var inp = new FilePathBuilderInput
             {
                 ProjectBaseDir    = projectDir,
-                RelativeNamespace = string.Join(".", f.SkipLast(1)),
-                ShortFileName     = l.Last() + ".auto.cs"
+                RelativeNamespace = Names.RelativeNamespace,
+                ShortFileName     = Names.ShortFileName
             };
             var maker = FilenameMaker ?? DefaultFilenameMaker.Instance;
             return maker.GetFileName(inp);
@@ -64,16 +59,18 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             return this;
         }
 
-        public EnumsGeneratorItem WithStringValue(string option, string valueDescription = null)
+        public EnumsGeneratorItem WithStringValue(string option, string valueDescription = null,
+            bool isCollection = false)
         {
             var el = Options.GetByOption(option);
             el.Parameter = el.Parameter.WithEncoder(ParametrizedOption.ValueEncoder.StringEncoder);
             if (!string.IsNullOrEmpty(valueDescription))
                 el.Parameter = el.Parameter.WithValueDescription(valueDescription);
+            el.Parameter.IsCollection = isCollection;
             return this;
         }
 
-        public string            TypeName       { get; set; }
+        public EnumsGeneratorItemNames               Names      { get; set; }
         public OptionsCollection Options        { get; set; }
         public Assembly          TargetAssembly { get; set; }
 
@@ -81,40 +78,15 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         {
             get
             {
-                var assemblyName = TargetAssembly.GetName().Name;
-                var parts        = TypeName.Split('+');
-                var dotIndex     = parts[0].LastIndexOf('.');
-                if (dotIndex < 0)
+                var assemblyName      = TargetAssembly.GetName().Name;
+                var relativeNamespace = Names.RelativeNamespace;
+                if (string.IsNullOrEmpty(relativeNamespace))
                     return assemblyName;
-                return assemblyName + "." + parts[0].Substring(0, dotIndex);
+                return assemblyName + "." + relativeNamespace;
             }
         }
 
-        public string[] OwnerClasses
-        {
-            get
-            {
-                var parts = TypeName.Split('+');
-                var result = parts.Take(parts.Length - 1)
-                    .Select(a =>
-                    {
-                        var q = a.Split('.');
-                        return q.Last();
-                    }).ToArray();
-                return result;
-            }
-        }
-
-        public string EnumName
-        {
-            get
-            {
-                var parts = TypeName.Split('+');
-                var n     = parts.Last();
-                parts = n.Split('.');
-                return parts.Last();
-            }
-        }
+        public string[] OwnerClasses => Names.OwnerClasses;
 
 
         [NotNull]
@@ -124,6 +96,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
         public List<CustomCreatorDelegate> CustomCreators { get; } = new List<CustomCreatorDelegate>();
         public Dictionary<string, string>  Tags           { get; } = new Dictionary<string, string>();
+        public string                      EnumName       => Names.EnumName;
     }
 
     public delegate void CustomCreatorDelegate(CsClass optionClass);

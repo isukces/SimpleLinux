@@ -10,6 +10,13 @@ namespace iSukces.SimpleLinux
             if (Sudo)
                 l.Add("sudo");
             l.AddRange(GetItems());
+            {
+                var o = Output;
+                if (!o.IsEmpty) 
+                    l.Add(o.WithOperator(">", ">>"));
+            }
+            
+                
             return string.Join(" ", l);
         }
 

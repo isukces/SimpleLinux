@@ -7,16 +7,72 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 {
     public class OptionsCollection
     {
-        public static OptionsCollection Parse(string text)
+        public static OptionsCollection Parse(string text, ParserKind parserKind)
         {
-            var result      = new OptionsCollection();
-            var lines       = text.SplitToLines();
+            switch (parserKind)
+            {
+                case ParserKind.Default:
+                    return ParseDefault(text);
+                case ParserKind.Style1:
+                    return ParseStyle1(text);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(parserKind), parserKind, null);
+            }
+        }
+
+        private static OptionsCollection ParseStyle1(string text)
+        {
+            var result = new OptionsCollection();
+            var lines  = text.SplitToLines();
+            if (lines.Length == 0)
+                return result;
+
+            OptionsCollectionValue value = null;
+            foreach (var line in lines)
+            {
+                var n           = line.Trim();
+                if (!n.StartsWith('-'))
+                {
+                    if (value is null)
+                        throw new Exception("Description without command");
+                    value.Description = value.Description.AppendText(n);
+                    continue;
+                }
+                
+                value = new OptionsCollectionValue();
+                var slashSeparatedParts = n.Split('/');
+                foreach (var option in slashSeparatedParts)
+                    value.UpdateFromParsedOption(option, ParserKind.Style1);
+
+                result.Values.Add(value);
+            }
+
+            {
+                var optionToItem = result.GetMap();
+                foreach (var option1 in result.Values)
+                {
+                    var enumerable = IncompatibleOptions.Parse(option1.Description);
+                    foreach (var option2 in enumerable)
+                    {
+                        var q = optionToItem[option2];
+                        result.AddConflict(option1.AnyWithMinus, q.AnyWithMinus);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static OptionsCollection ParseDefault(string text)
+        {
+            var result = new OptionsCollection();
+            var lines  = text.SplitToLines();
             if (lines.Length == 0)
                 return result;
             var splitColumn = lines.GetSplitColumn();
 
-           
-            OptionsCollectionValue value  = null;
+            OptionsCollectionValue value = null;
             foreach (var line in lines)
             {
                 var optionNames = line.Substring(0, splitColumn).Trim();
@@ -35,7 +91,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 };
                 var commaSeparatedParts = optionNames.Split(',');
                 foreach (var option in commaSeparatedParts)
-                    value.UpdateFromParsedOption(option);
+                    value.UpdateFromParsedOption(option, ParserKind.Default);
 
                 result.Values.Add(value);
             }
@@ -101,5 +157,17 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         public IList<IncompatibleOptions> IncompatibleValues { get; } = new List<IncompatibleOptions>();
 
         public List<OptionsCollectionValue> Values { get; } = new List<OptionsCollectionValue>();
+    }
+
+    public enum ParserKind
+    {
+        Default,
+        
+        /// <summary>
+        /// Like https://www.mit.edu/afs.new/sipb/user/ssen/src/curl-7.11.1/docs/curl.html
+        /// - switch names is starting line, separated by /
+        /// - arguments in triangle brackets
+        /// </summary>
+        Style1
     }
 }

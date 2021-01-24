@@ -6,7 +6,7 @@ using iSukces.Code.Interfaces;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
 {
-    internal class SingleTaskEnumsGenerator
+    internal partial class SingleTaskEnumsGenerator
     {
         private SingleTaskEnumsGenerator(ISingleTaskEnumsGeneratorContext context, EnumsGeneratorItem item)
         {
@@ -14,9 +14,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             _context = context;
             _lazyMyStruct = new Lazy<CsClass>(() =>
             {
-                var res = MyNamespace.GetOrCreateClass(MyStructName);
+                var res = MyNamespace.GetOrCreateClass(OptionsClassName);
                 res.IsPartial = true;
-                // res.Kind      = CsNamespaceMemberKind.Struct;
                 return res;
             });
             _lazyMyNamespace = new Lazy<CsNamespace>(() => _context.GetOrCreateNamespace(_item.Namespace));
@@ -222,7 +221,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                     var value         = p.Value.Camelise(true).FirstLower();
                     var setExpression = prop.Name;
 
-                    var cs = CsCodeWriter.Create<SingleTaskEnumsGenerator>();
+                    var methodName = "With" + prop.Name;
+                    var cs         = CsCodeWriter.Create<SingleTaskEnumsGenerator>();
                     {
                         switch (kind)
                         {
@@ -233,20 +233,18 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                                 cs.WriteLine($"{setExpression}[{key}] = {value};");
                                 break;
                             case ParametrizedOption.OptionValueProcessorKind.List:
-                                cs.WriteLine($"if ({value} != null)");
+                                cs.WriteLine($"if ({value.CodeHasElements("Length")})");
                                 cs.IncIndent();
-                                cs.WriteLine("foreach(var tmp in " + value + ")");
-                                cs.IncIndent();
-                                cs.WriteLine($"{setExpression}.Add(tmp);");
+                                cs.SingleLineForeach("tmp", value, $"{setExpression}.Add(tmp);");
                                 cs.DecIndent();
-                                cs.DecIndent();
+                                methodName = "WithAppend" + prop.Name;
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
                     }
                     cs.WriteLine("return this;");
-                    var fluentMethod = str.AddMethod("With" + prop.Name, str.Name)
+                    var fluentMethod = str.AddMethod(methodName, str.Name)
                         .WithBody(cs);
 
                     var fmParams = FluentMethodParameters.Get(kind, propInfo);
@@ -266,15 +264,14 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                         apps.Add((cc, re) =>
                         {
                             cc.WriteDescriptionComment(option);
-                            cc.Open($"if (!({prop.Name} is null) && {prop.Name}.Count > 0)");
+                            var condition = prop.Name.CodeHasElements();
+                            cc.Open($"if ({condition})");
                             {
                                 var tmp = prop.Name.FirstLower() + "Item";
                                 cc.WriteLine($"yield return {option.AnyWithMinus.CsEncode()};");
-                                cc.Open($"foreach(var {tmp} in {prop.Name})");
                                 var input      = new ParametrizedOption.OptionValueProcessorInput(tmp, kind, re);
                                 var expression = p.Encoder.Convert(input);
-                                cc.WriteLine($"yield return {expression};");
-                                cc.Close();
+                                cc.SingleLineForeach(tmp, prop.Name, $"yield return {expression};");
                             }
                             cc.Close();
                         });
@@ -304,7 +301,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                         apps.Add((cc, resolver) =>
                         {
                             cc.WriteDescriptionComment(option);
-                            var condition = p.Encoder.GetCondition(prop.Name, p.IsCollection);
+                            var condition = p.Encoder.GetCondition(prop.Name, kind);
                             cc.Open($"if ({condition})");
                             {
                                 cc.WriteLine("yield return " + option.AnyWithMinus.CsEncode() + ';');
@@ -314,16 +311,9 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                                 var input      = new ParametrizedOption.OptionValueProcessorInput(ex, kind, resolver);
                                 var expression = p.Encoder.Convert(input);
                                 if (p.IsCollection)
-                                {
-                                    cc.WriteLine($"foreach(var tmp in {expression})");
-                                    cc.IncIndent();
-                                    cc.WriteLine("yield return tmp;");
-                                    cc.DecIndent();
-                                }
+                                    cc.SingleLineForeach("tmp", expression, "yield return tmp;");
                                 else
-                                {
                                     cc.WriteLine($"yield return {expression};");
-                                }
                             }
                             cc.Close();
                         });
@@ -398,8 +388,10 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 var cw   = CsCodeWriter.Create<SingleTaskEnumsGenerator>();
                 cw.WriteLine($"{flagsPropertyName} = {flagsPropertyName}.{SetOrClearMethod}({mask}, value);");
                 cw.WriteLine("return this;");
-                var m = MyStruct.AddMethod("With" + enumItem.EnumName, MyStructName).WithBody(cw);
+                var m = MyStruct.AddMethod("With" + enumItem.EnumName, OptionsClassName)
+                    .WithBody(cw);
                 m.AddParam("value", "bool").ConstValue = "true";
+                m.Description                          = enumItem.Description;
             }
         }
 
@@ -410,8 +402,8 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 .WithMakeAutoImplementIfPossible();
         }
 
-        private string MyStructName   => _item.EnumName + "Options";
-        private string MyEnumTypeName => _item.EnumName + "Flags";
+        private string OptionsClassName => _item.Names.OptionsContainerClassName;
+        private string MyEnumTypeName   => _item.EnumName + "Flags";
 
         private CsClass MyStruct => _lazyMyStruct.Value;
 
@@ -434,49 +426,5 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         private const string preferLongNameVariable = "preferLongNames";
         private const string SetOrClearMethod = "SetOrClear";
         private const string valueVariable = "value";
-
-        private class FluentMethodParameters
-        {
-            public static FluentMethodParameters Get(ParametrizedOption.OptionValueProcessorKind kind,
-                ParametrizedOption.ValueEncoder.PropInfo propInfo)
-            {
-                switch (kind)
-                {
-                    case ParametrizedOption.OptionValueProcessorKind.SingleValue:
-                        return new FluentMethodParameters
-                        {
-                            ValueParameterType = propInfo.PropertyType
-                        };
-                    case ParametrizedOption.OptionValueProcessorKind.Dictionary:
-                        return new FluentMethodParameters
-                        {
-                            ValueParameterType = propInfo.ElementType,
-                            AddKey             = true
-                        };
-                    case ParametrizedOption.OptionValueProcessorKind.List:
-                        return new FluentMethodParameters
-                        {
-                            ValueParameterType = propInfo.ElementType,
-                            IsParam            = true
-                        };
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-
-            public string ValueParameterType { get; set; }
-            public bool   AddKey             { get; set; }
-            public bool   IsParam            { get; set; }
-
-            public string ValueParameterType2
-            {
-                get
-                {
-                    if (IsParam)
-                        return ValueParameterType + "[]";
-                    return ValueParameterType;
-                }
-            }
-        }
     }
 }

@@ -35,6 +35,12 @@
       <Compile Update="Generators\ParametrizedOption.OptionValueProcessorInput.cs">
         <DependentUpon>ParametrizedOption.cs</DependentUpon>
       </Compile>
+      <Compile Update="Generators\ParametrizedOption.PropInfo.cs">
+        <DependentUpon>ParametrizedOption.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Generators\SingleTaskEnumsGenerator.FluentMethodParameters.cs">
+        <DependentUpon>SingleTaskEnumsGenerator.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

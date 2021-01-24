@@ -9,7 +9,7 @@ namespace iSukces.SimpleLinux.Tests
         [Fact]
         public void T01_Should_parse_sample_options()
         {
-            var q = OptionsCollection.Parse(sampleOptions);
+            var q = OptionsCollection.Parse(sampleOptions, ParserKind.Default);
             Assert.Equal(17, q.Values.Count);
             {
                 var a = q.Values[0];
@@ -32,8 +32,8 @@ namespace iSukces.SimpleLinux.Tests
         {
             var tmp = new EnumsGeneratorItem
             {
-                TypeName       = "Bla",
-                Options        = OptionsCollection.Parse(sampleOptions),
+                Names       = "Bla",
+                Options        = OptionsCollection.Parse(sampleOptions, ParserKind.Default),
                 TargetAssembly = typeof(EnumsGeneratorTests).Assembly
             };
             Assert.Equal("iSukces.SimpleLinux.Tests", tmp.Namespace);
@@ -47,8 +47,8 @@ namespace iSukces.SimpleLinux.Tests
         {
             var tmp = new EnumsGeneratorItem
             {
-                TypeName       = "Other.Bla",
-                Options        = OptionsCollection.Parse(sampleOptions),
+                Names       = "Other.Bla",
+                Options        = OptionsCollection.Parse(sampleOptions, ParserKind.Default),
                 TargetAssembly = typeof(EnumsGeneratorTests).Assembly
             };
             Assert.Equal("iSukces.SimpleLinux.Tests.Other", tmp.Namespace);

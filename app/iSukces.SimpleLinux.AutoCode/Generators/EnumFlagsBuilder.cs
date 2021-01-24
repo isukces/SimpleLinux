@@ -28,10 +28,24 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         {
             enumItem.EncodedValue = Value.ToInv();
             _target.Items.Add(enumItem);
-            Value *= 2;
+            _target.UnderlyingType =  GetUnderlyingType();
+            Value                  *= 2;
         }
 
-        public int Value { get; private set; } = 1;
+        private string GetUnderlyingType()
+        {
+            if (Value > long.MaxValue)
+                return "ulong";
+            if (Value > int.MaxValue)
+                return "long";
+            if (Value > (long)short.MaxValue)
+                return "";
+            if (Value > byte.MaxValue)
+                return "short";
+            return "byte";
+        }
+
+        public ulong Value { get; private set; } = 1;
         private readonly CsEnum _target;
     }
 }

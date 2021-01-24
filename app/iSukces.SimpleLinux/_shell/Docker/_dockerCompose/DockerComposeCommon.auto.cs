@@ -140,9 +140,13 @@ namespace iSukces.SimpleLinux.Docker
             return GetCodeItems();
         }
 
+        /// <summary>
+        /// --compatibility: If set, Compose will attempt to convert deploy keys in v3 files to their non-Swarm equivalent
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeCommonOptions WithCompatibility(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.Compatibility, value);
             return this;
         }
@@ -180,9 +184,13 @@ namespace iSukces.SimpleLinux.Docker
             return this;
         }
 
+        /// <summary>
+        /// --no-ansi: Do not print ANSI control characters
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeCommonOptions WithNoAnsi(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.NoAnsi, value);
             return this;
         }
@@ -209,16 +217,24 @@ namespace iSukces.SimpleLinux.Docker
             return this;
         }
 
+        /// <summary>
+        /// --skip-hostname-check: Don't check the daemon's hostname against the name specified in the client certificate
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeCommonOptions WithSkipHostnameCheck(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.SkipHostnameCheck, value);
             return this;
         }
 
+        /// <summary>
+        /// --tls: Use TLS; implied by --tlsverify
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeCommonOptions WithTls(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.Tls, value);
             return this;
         }
@@ -256,23 +272,35 @@ namespace iSukces.SimpleLinux.Docker
             return this;
         }
 
+        /// <summary>
+        /// --tlsverify: Use TLS and verify the remote
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeCommonOptions WithTlsverify(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.Tlsverify, value);
             return this;
         }
 
+        /// <summary>
+        /// --verbose: Show more output
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeCommonOptions WithVerbose(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.Verbose, value);
             return this;
         }
 
+        /// <summary>
+        /// -v, --version: Print version and exit
+        /// </summary>
+        /// <param name="value"></param>
         public DockerComposeCommonOptions WithVersion(bool value = true)
         {
-            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:398
+            // generator : SingleTaskEnumsGenerator.MyStruct_AddWithMethod:388
             Flags = Flags.SetOrClear(DockerComposeCommonFlags.Version, value);
             return this;
         }
@@ -322,7 +350,7 @@ namespace iSukces.SimpleLinux.Docker
     }
 
     [Flags]
-    public enum DockerComposeCommonFlags
+    public enum DockerComposeCommonFlags: byte
     {
         None = 0,
         /// <summary>

@@ -24,7 +24,6 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                     q =>
                     {
                         return q.Expression + "." + ShellEnumOptionsGenerator.extensionMethodName + "()";
-                        //throw new NotSupportedException();
                     },
                     enumValues);
             }
@@ -49,29 +48,24 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             {
                 return src.Expression;
             }
-
-
-            private static bool IsCollectionType(Type def)
+            
+            public string GetCondition(string expression, OptionValueProcessorKind kind)
             {
-                return def == typeof(List<>)
-                       || def == typeof(IReadOnlyList<>)
-                       || def == typeof(IList<>)
-                       || def == typeof(IReadOnlyCollection<>)
-                       || def == typeof(ICollection<>);
-            }
-
-            public string GetCondition(string expression, bool isCollection)
-            {
-                var type = ValueType.FixedType;
-                if (type == typeof(string)) return $"!string.IsNullOrEmpty({expression})";
-                if (isCollection)
+                switch (kind)
                 {
-                    var def = type.GetGenericTypeDefinition();
-                    if (IsCollectionType(def))
-                        return $"!({expression} is null) && {expression}.Count > 0";
+                    case OptionValueProcessorKind.SingleValue:
+                    {
+                        var type = ValueType.FixedType;
+                        if (type == typeof(string)) return $"!string.IsNullOrEmpty({expression})";
+                        return $"!({expression} is null)";
+                    }
+                    case OptionValueProcessorKind.Dictionary:
+                    case OptionValueProcessorKind.List:
+                        return expression.CodeHasElements();
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
 
-                return $"!({expression} is null)";
             }
 
             public PropInfo GetPropertyTypeName(OptionValueProcessorKind kind, ITypeNameResolver res,
@@ -128,39 +122,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
             public static readonly ValueEncoder StringEncoder
                 = new ValueEncoder(OptionValueType.Make<string>(), ConvertToString);
-
-            public class PropInfo
-            {
-                public PropInfo(string propertyType)
-                {
-                    PropertyType = propertyType;
-                    ElementType  = propertyType;
-                }
-
-                public PropInfo MakeDict(ITypeNameResolver resolver)
-                {
-                    var type = resolver.GetTypeName<IDictionary<int, int>>().Split('<').First();
-                    var init = resolver.GetTypeName<Dictionary<int, int>>().Split('<').First();
-                    PropertyInit = $"new {init}<string, {ElementType}>()";
-                    PropertyType = $"{type}<string, {ElementType}>";
-                    return this;
-                }
-
-                public PropInfo MakeList(ITypeNameResolver resolver)
-                {
-                    var type = resolver.GetTypeName<IList<int>>().Split('<').First();
-                    var init = resolver.GetTypeName<List<int>>().Split('<').First();
-                    PropertyInit = $"new {init}<{ElementType}>()";
-                    PropertyType = $"{type}<{ElementType}>";
-                    return this;
-                }
-
-                public string ElementType { get; }
-
-                public string PropertyType { get; set; }
-
-                public string PropertyInit { get; set; }
-            }
+ 
         }
     }
 }

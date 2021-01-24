@@ -24,6 +24,12 @@
       <Compile Update="_files\ScriptFileContentSource.cs">
         <DependentUpon>IFileContentSource.cs</DependentUpon>
       </Compile>
+      <Compile Update="_shell\Unzip.auto.cs">
+        <DependentUpon>UnzipCommand.cs</DependentUpon>
+      </Compile>
+      <Compile Update="_shell\Curl.auto.cs">
+        <DependentUpon>CurlCommand.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <None Remove="iSukces.SimpleLinux.csproj.DotSettings" />

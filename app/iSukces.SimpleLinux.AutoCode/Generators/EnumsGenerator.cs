@@ -46,12 +46,12 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
         }
 
 
-        public EnumsGeneratorItem WithEnum(string typeName, string s)
+        public EnumsGeneratorItem WithEnum(string typeName, string s, ParserKind parserKind =ParserKind.Default)
         {
             var tmp = new EnumsGeneratorItem
             {
-                TypeName       = typeName,
-                Options        = OptionsCollection.Parse(s),
+                Names       = typeName,
+                Options        = OptionsCollection.Parse(s, parserKind),
                 TargetAssembly = _currentTargetAssembly
             };
             ItemsToCreate.Add(tmp);

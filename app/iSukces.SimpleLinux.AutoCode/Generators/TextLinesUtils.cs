@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
 {
@@ -43,6 +44,28 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             if (splitColumns.Length == 1)
                 return splitColumns[0];
             return splitColumns[1];
+        }
+
+        public static string[] SplitBySpace(string option, bool appendEmpty)
+        {
+            var l  = new List<string>();
+            var sb = new StringBuilder();
+            foreach (var i in option)
+            {
+                if (i == ' ')
+                {
+                    if (sb.Length > 0)
+                        l.Add(sb.ToString());
+                    sb.Clear();
+                }
+                else
+                    sb.Append(i);
+            }
+            if (sb.Length > 0)
+                l.Add(sb.ToString());
+            if (appendEmpty && l.Count == 0)
+                l.Add(string.Empty);
+            return l.ToArray();
         }
     }
 }

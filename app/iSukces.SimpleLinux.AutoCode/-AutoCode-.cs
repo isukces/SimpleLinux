@@ -8,82 +8,39 @@ using System.Runtime.CompilerServices;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
 {
-    partial class ParametrizedOptionBuilder
+    partial class ParametrizedOption
     {
-        public ParametrizedOptionBuilder()
+        public string Name
         {
+            get { return _name; }
+            set { _name = value?.Trim() ?? string.Empty; }
         }
 
-        public ParametrizedOptionBuilder(ParametrizedOption source)
+        private string _name;
+
+        public string Value
         {
-            if (source is null) return;
-            Value = source.Value;
-            Name = source.Name;
-            Encoder = source.Encoder;
-            ValueDescription = source.ValueDescription;
-            PropertyName = source.PropertyName;
-            IsCollection = source.IsCollection;
+            get { return _value; }
+            set { _value = value?.Trim() ?? string.Empty; }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametrizedOption Build()
+        private string _value;
+
+        public string ValueDescription
         {
-            return new ParametrizedOption(Value, Name, Encoder, ValueDescription, PropertyName, IsCollection);
+            get { return _valueDescription; }
+            set { _valueDescription = value?.Trim() ?? string.Empty; }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametrizedOptionBuilder WithEncoder(ParametrizedOption.ValueEncoder newEncoder)
+        private string _valueDescription;
+
+        public string PropertyName
         {
-            Encoder = newEncoder;
-            return this;
+            get { return _propertyName; }
+            set { _propertyName = value?.Trim() ?? string.Empty; }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametrizedOptionBuilder WithIsCollection(bool newIsCollection)
-        {
-            IsCollection = newIsCollection;
-            return this;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametrizedOptionBuilder WithName(string newName)
-        {
-            Name = newName;
-            return this;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametrizedOptionBuilder WithPropertyName(string newPropertyName)
-        {
-            PropertyName = newPropertyName;
-            return this;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametrizedOptionBuilder WithValue(string newValue)
-        {
-            Value = newValue;
-            return this;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametrizedOptionBuilder WithValueDescription(string newValueDescription)
-        {
-            ValueDescription = newValueDescription;
-            return this;
-        }
-
-        public string Value { get; set; }
-
-        public string Name { get; set; }
-
-        public ParametrizedOption.ValueEncoder Encoder { get; set; }
-
-        public string ValueDescription { get; set; }
-
-        public string PropertyName { get; set; }
-
-        public bool IsCollection { get; set; }
+        private string _propertyName;
 
     }
 }
