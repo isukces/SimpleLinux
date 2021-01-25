@@ -28,6 +28,13 @@ namespace iSukces.SimpleLinux.Docker
             WriteLine("RUN " + code);
             return this;
         }
+        public DockerfileScriptBuilder Run(OnelineLinuxCommand code)
+        {
+            WriteLine("RUN " + code.GetCode());
+            return this;
+        }
+
+        
 
         public void Volume(string dirName)
         {
@@ -39,6 +46,12 @@ namespace iSukces.SimpleLinux.Docker
         {
             var v = JsonConvert.SerializeObject(dirs.Select(a => a.FullName));
             WriteLine("VOLUME v");
+        }
+
+        public DockerfileScriptBuilder WorkDir(string workdir)
+        {
+            WriteLine("WORKDIR "+workdir);
+            return this;
         }
     }
 }
