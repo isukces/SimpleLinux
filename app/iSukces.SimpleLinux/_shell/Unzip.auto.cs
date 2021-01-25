@@ -40,13 +40,13 @@ namespace iSukces.SimpleLinux
             {
                 yield return "-x";
                 foreach (var xItem in X)
-                    yield return xItem;
+                    yield return xItem.ShellQuote();
             }
             // -d =output-directory: An optional directory to which to extract files.
             if (!string.IsNullOrEmpty(OutputDirectory))
             {
                 yield return "-d";
-                yield return OutputDirectory;
+                yield return OutputDirectory.ShellQuote();
             }
         }
 

@@ -36,38 +36,38 @@ namespace iSukces.SimpleLinux
             if (!string.IsNullOrEmpty(BaseDir))
             {
                 yield return "--base-dir";
-                yield return BaseDir;
+                yield return BaseDir.ShellQuote();
             }
             // -c, --comment =COMMENT: Any text string.
             if (!string.IsNullOrEmpty(Comment))
             {
                 yield return "--comment";
-                yield return Comment;
+                yield return Comment.ShellQuote();
             }
             // -d, --home =HOME_DIR: The new user will be created using HOME_DIR as the value for the user's login directory.
             if (!string.IsNullOrEmpty(Home))
             {
                 yield return "--home";
-                yield return Home;
+                yield return Home.ShellQuote();
             }
             // -g, --gid =GROUP: The group name or number of the user's initial login group. The group name must exist.
             if (!string.IsNullOrEmpty(Gid))
             {
                 yield return "--gid";
-                yield return Gid;
+                yield return Gid.ShellQuote();
             }
             // -K, --key KEY=VALUE: Overrides /etc/login.defs defaults (UID_MIN, UID_MAX, UMASK, PASS_MAX_DAYS and others)
             foreach(var pair in Key)
             {
                 yield return "--key";
-                var value = pair.Value;
+                var value = pair.Value.ShellQuote();
                 yield return $"{pair.Key}={value}";
             }
             // -p, --password =PASSWORD: The encrypted password, as returned by crypt(3). The default is to disable the password.
             if (!string.IsNullOrEmpty(Password))
             {
                 yield return "--password";
-                yield return Password;
+                yield return Password.ShellQuote();
             }
         }
 

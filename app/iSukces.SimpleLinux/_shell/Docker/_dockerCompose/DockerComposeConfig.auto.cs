@@ -63,7 +63,7 @@ namespace iSukces.SimpleLinux.Docker
             if (!string.IsNullOrEmpty(Hash))
             {
                 yield return "--hash";
-                yield return Hash;
+                yield return Hash.ShellQuote();
             }
         }
 

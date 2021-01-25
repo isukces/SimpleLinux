@@ -24,7 +24,7 @@ namespace iSukces.SimpleLinux
             if (!string.IsNullOrEmpty(ArchiveFileName))
             {
                 yield return "-f";
-                yield return ArchiveFileName;
+                yield return ArchiveFileName.ShellQuote();
             }
         }
 

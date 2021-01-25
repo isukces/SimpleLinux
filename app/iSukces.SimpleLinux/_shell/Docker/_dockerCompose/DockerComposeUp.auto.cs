@@ -140,7 +140,7 @@ namespace iSukces.SimpleLinux.Docker
             if (!string.IsNullOrEmpty(ExitCodeFrom))
             {
                 yield return "--exit-code-from";
-                yield return ExitCodeFrom;
+                yield return ExitCodeFrom.ShellQuote();
             }
             // --scale SERVICE=NUM: Scale SERVICE to NUM instances. Overrides the `scale` setting in the Compose file if present.
             foreach(var pair in Scale)

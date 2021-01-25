@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using iSukces.Code.Interfaces;
 
 namespace iSukces.SimpleLinux.AutoCode.Generators
@@ -21,10 +19,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
             public static ValueEncoder EnumProcessor(string[] enumValues)
             {
                 return new ValueEncoder(new OptionValueType(null),
-                    q =>
-                    {
-                        return q.Expression + "." + ShellEnumOptionsGenerator.extensionMethodName + "()";
-                    },
+                    q => { return q.Expression + "." + ShellEnumOptionsGenerator.extensionMethodName + "()"; },
                     enumValues);
             }
 
@@ -44,11 +39,17 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                 }
             }
 
+
             private static string ConvertToString(OptionValueProcessorInput src)
             {
-                return src.Expression;
+                var          typeName   = src.Resolver.GetTypeName(typeof(SimpleLinuxExtensions));
+                const string methodName = nameof(SimpleLinuxExtensions.ShellQuote);
+                if (typeName == nameof(SimpleLinuxExtensions))
+                    // use as expression   
+                    return $"{src.Expression}.{methodName}()";
+                return $"{typeName}.{methodName}({src.Expression})";
             }
-            
+
             public string GetCondition(string expression, OptionValueProcessorKind kind)
             {
                 switch (kind)
@@ -65,7 +66,6 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
-
             }
 
             public PropInfo GetPropertyTypeName(OptionValueProcessorKind kind, ITypeNameResolver res,
@@ -122,7 +122,6 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
 
             public static readonly ValueEncoder StringEncoder
                 = new ValueEncoder(OptionValueType.Make<string>(), ConvertToString);
- 
         }
     }
 }

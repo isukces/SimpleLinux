@@ -89,13 +89,13 @@ namespace iSukces.SimpleLinux.Docker
             if (!string.IsNullOrEmpty(File))
             {
                 yield return "--file";
-                yield return File;
+                yield return File.ShellQuote();
             }
             // -p, --project-name =NAME: Specify an alternate project name (default: directory name)
             if (!string.IsNullOrEmpty(ProjectName))
             {
                 yield return "--project-name";
-                yield return ProjectName;
+                yield return ProjectName.ShellQuote();
             }
             // --log-level =LEVEL: Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
             if (!(LogLevel is null))
@@ -107,31 +107,31 @@ namespace iSukces.SimpleLinux.Docker
             if (!string.IsNullOrEmpty(Host))
             {
                 yield return "--host";
-                yield return Host;
+                yield return Host.ShellQuote();
             }
             // --tlscacert =CA_PATH: Trust certs signed only by this CA
             if (!string.IsNullOrEmpty(Tlscacert))
             {
                 yield return "--tlscacert";
-                yield return Tlscacert;
+                yield return Tlscacert.ShellQuote();
             }
             // --tlscert =CLIENT_CERT_PATH: Path to TLS certificate file
             if (!string.IsNullOrEmpty(Tlscert))
             {
                 yield return "--tlscert";
-                yield return Tlscert;
+                yield return Tlscert.ShellQuote();
             }
             // --tlskey =TLS_KEY_PATH: Path to TLS key file
             if (!string.IsNullOrEmpty(Tlskey))
             {
                 yield return "--tlskey";
-                yield return Tlskey;
+                yield return Tlskey.ShellQuote();
             }
             // --project-directory =PATH: Specify an alternate working directory (default: the path of the Compose file)
             if (!string.IsNullOrEmpty(ProjectDirectory))
             {
                 yield return "--project-directory";
-                yield return ProjectDirectory;
+                yield return ProjectDirectory.ShellQuote();
             }
         }
 

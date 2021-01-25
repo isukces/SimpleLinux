@@ -9,7 +9,7 @@ namespace iSukces.SimpleLinux
             yield return "useradd";
             foreach (var i in GetCodeItems())
                 yield return i;
-            yield return Login;
+            yield return Login.ShellQuote();
         }
 
         public UserAddCommand WithLogin(string login)

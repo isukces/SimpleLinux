@@ -114,13 +114,13 @@ namespace iSukces.SimpleLinux
             if (!string.IsNullOrEmpty(UserAgent))
             {
                 yield return "--user-agent";
-                yield return UserAgent;
+                yield return UserAgent.ShellQuote();
             }
             // -b, --cookie name=cookie value: Pass the data to the HTTP server as a cookie.
             foreach(var pair in CookieValue)
             {
                 yield return "--cookie";
-                var value = pair.Value;
+                var value = pair.Value.ShellQuote();
                 yield return $"{pair.Key}={value}";
             }
             // --ciphers list of ciphers: Specifies which ciphers to use in the connection.
@@ -128,7 +128,7 @@ namespace iSukces.SimpleLinux
             {
                 yield return "--ciphers";
                 foreach (var ciphersItem in Ciphers)
-                    yield return ciphersItem;
+                    yield return ciphersItem.ShellQuote();
             }
             // --connect-timeout =seconds: Maximum time in seconds that you allow the connection to the server to take.
             if (!(ConnectTimeout is null))
@@ -140,7 +140,7 @@ namespace iSukces.SimpleLinux
             if (!string.IsNullOrEmpty(CookieJar))
             {
                 yield return "--cookie-jar";
-                yield return CookieJar;
+                yield return CookieJar.ShellQuote();
             }
             // -C, --continue-at =offset: Continue/Resume a previous file transfer at the given offset.
             if (!(ContinueAt is null))
@@ -152,31 +152,31 @@ namespace iSukces.SimpleLinux
             if (!string.IsNullOrEmpty(Data))
             {
                 yield return "--data";
-                yield return Data;
+                yield return Data.ShellQuote();
             }
             // --data-binary =data: (HTTP) This posts data in a similar manner as --data-ascii does, although when using this option the entire context of the posted data is kept as-is.
             if (!string.IsNullOrEmpty(DataBinary))
             {
                 yield return "--data-binary";
-                yield return DataBinary;
+                yield return DataBinary.ShellQuote();
             }
             // -D, --dump-header =fileName: Write the protocol headers to the specified file.
             if (!string.IsNullOrEmpty(DumpHeaderFileName))
             {
                 yield return "--dump-header";
-                yield return DumpHeaderFileName;
+                yield return DumpHeaderFileName.ShellQuote();
             }
             // -e, --referer =referer page url: (HTTP) Sends the "Referer Page" information to the HTTP server.
             if (!string.IsNullOrEmpty(Referer))
             {
                 yield return "--referer";
-                yield return Referer;
+                yield return Referer.ShellQuote();
             }
             // --egd-file =fileName: (HTTPS) Specify the path name to the Entropy Gathering Daemon socket.
             if (!string.IsNullOrEmpty(EgdFile))
             {
                 yield return "--egd-file";
-                yield return EgdFile;
+                yield return EgdFile.ShellQuote();
             }
             // --cert-type =type: (SSL) Tells curl what certificate type the provided certificate is in. PEM, DER and ENG are recognized types.
             if (!(CertType is null))
@@ -188,44 +188,44 @@ namespace iSukces.SimpleLinux
             if (!string.IsNullOrEmpty(Cacert))
             {
                 yield return "--cacert";
-                yield return Cacert;
+                yield return Cacert.ShellQuote();
             }
             // --capath =CA certificate directory: (HTTPS) Tells curl to use the specified certificate directory to verify the peer.
             if (!string.IsNullOrEmpty(Capath))
             {
                 yield return "--capath";
-                yield return Capath;
+                yield return Capath.ShellQuote();
             }
             // -F, --form name=content: (HTTP) This lets curl emulate a filled in form in which a user has pressed the submit button.
             foreach(var pair in Form)
             {
                 yield return "--form";
-                var value = pair.Value;
+                var value = pair.Value.ShellQuote();
                 yield return $"{pair.Key}={value}";
             }
             // -H, --header =header: (HTTP) Extra header to use when getting a web page.
             if (!string.IsNullOrEmpty(Header))
             {
                 yield return "--header";
-                yield return Header;
+                yield return Header.ShellQuote();
             }
             // --key =Private key file name: (SSL) Private key file name
             if (!string.IsNullOrEmpty(Key))
             {
                 yield return "--key";
-                yield return Key;
+                yield return Key.ShellQuote();
             }
             // -K, --config =config file: Specify which config file to read curl arguments from.
             if (!string.IsNullOrEmpty(Config))
             {
                 yield return "--config";
-                yield return Config;
+                yield return Config.ShellQuote();
             }
             // --limit-rate =speed: Specify the maximum transfer rate you want curl to use.
             if (!string.IsNullOrEmpty(LimitRate))
             {
                 yield return "--limit-rate";
-                yield return LimitRate;
+                yield return LimitRate.ShellQuote();
             }
             // --max-filesize =bytes: Specify the maximum size (in bytes) of a file to download.
             if (!(MaxFilesize is null))
@@ -243,19 +243,19 @@ namespace iSukces.SimpleLinux
             if (!string.IsNullOrEmpty(OutputFile))
             {
                 yield return "--output";
-                yield return OutputFile;
+                yield return OutputFile.ShellQuote();
             }
             // -T, --upload-file =file: This transfers the specified local file to the remote URL.
             if (!string.IsNullOrEmpty(UploadFile))
             {
                 yield return "--upload-file";
-                yield return UploadFile;
+                yield return UploadFile.ShellQuote();
             }
             // --url =URL: Specify a URL to fetch.
             if (!string.IsNullOrEmpty(Url))
             {
                 yield return "--url";
-                yield return Url;
+                yield return Url.ShellQuote();
             }
         }
 
