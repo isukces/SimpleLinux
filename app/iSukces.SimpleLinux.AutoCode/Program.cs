@@ -10,6 +10,8 @@ namespace iSukces.SimpleLinux.AutoCode
             var enumsGenerator = new EnumsGenerator(AllGenerators.GetDirectoryProvider())
                 .WithTargetAssembly<Sha1Code>();
 
+            UseraddSetup.Add(enumsGenerator);
+            TarSetup.Add(enumsGenerator);
             CurlSetup.Add(enumsGenerator);
             UnzipSetup.Add(enumsGenerator);
             DockerComposeSetup.Add(enumsGenerator);

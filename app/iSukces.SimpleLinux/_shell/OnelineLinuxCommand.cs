@@ -15,7 +15,6 @@ namespace iSukces.SimpleLinux
                 if (!o.IsEmpty) 
                     l.Add(o.WithOperator(">", ">>"));
             }
-            
                 
             return string.Join(" ", l);
         }

@@ -29,11 +29,44 @@ namespace iSukces.SimpleLinux
                 break;
             }
 
-            if (y.StartsWith("../"))
+            /*if (y.StartsWith("../"))
+            {
                 throw new NotImplementedException();
+            }
+
             if (y.StartsWith("./"))
-                y = y.Substring(2);
-            return x + "/" + y;
+                y = y.Substring(2);*/
+            var result     =  x + "/" + y;
+            var isAbsolute = x.StartsWith("/");
+            if (isAbsolute)
+                result = result.Substring(1);
+            var parts      = result.Split('/').ToList();
+            for (var index = 0; index < parts.Count; index++)
+            {
+                var p = parts[index];
+                if (p == ".")
+                {
+                    var canRemove = isAbsolute || index > 0;
+                    if (canRemove)
+                    {
+                        parts.RemoveAt(index);
+                        index--;
+                    }
+
+                    continue;
+                }
+                if (p != "..") continue;
+                if (index == 0)
+                    throw new Exception("");
+                parts.RemoveAt(index);
+                parts.RemoveAt(index-1);
+                index--;
+            }
+
+            result = string.Join("/", parts);
+            if (isAbsolute)
+                return "/" + result;
+            return result;
         }
 
         public void CheckAbsolute(string variableName)

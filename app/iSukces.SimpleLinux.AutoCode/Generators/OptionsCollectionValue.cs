@@ -39,7 +39,7 @@ namespace iSukces.SimpleLinux.AutoCode.Generators
                     var m = Style1OptionParserRegex.Match(option);
                     if (!m.Success)
                         throw new Exception("Invalid format");
-                    var name = m.Groups[1].Value;
+                    var name = m.Groups[1].Value.Trim();
                     if (name.StartsWith("$"))
                     {
                         this.ForceCsName = name.Substring(1).Camelise();

@@ -17,14 +17,16 @@ namespace iSukces.SimpleLinux.Docker
             WriteLine($"EXPOSE {i.ToString(CultureInfo.InvariantCulture)}");
         }
 
-        public void From(string imageName)
+        public DockerfileScriptBuilder From(string imageName)
         {
             WriteLine("FROM " + imageName);
+            return this;
         }
 
-        public void Run(string code)
+        public DockerfileScriptBuilder Run(string code)
         {
             WriteLine("RUN " + code);
+            return this;
         }
 
         public void Volume(string dirName)

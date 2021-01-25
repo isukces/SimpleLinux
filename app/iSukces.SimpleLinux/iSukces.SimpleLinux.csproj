@@ -30,6 +30,12 @@
       <Compile Update="_shell\Curl.auto.cs">
         <DependentUpon>CurlCommand.cs</DependentUpon>
       </Compile>
+      <Compile Update="_shell\Tar.auto.cs">
+        <DependentUpon>TarCommand.cs</DependentUpon>
+      </Compile>
+      <Compile Update="_shell\UserAdd.auto.cs">
+        <DependentUpon>UserAddCommand.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <None Remove="iSukces.SimpleLinux.csproj.DotSettings" />
