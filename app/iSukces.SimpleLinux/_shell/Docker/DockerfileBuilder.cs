@@ -58,9 +58,7 @@ namespace iSukces.SimpleLinux.Docker
             foreach (var i in lines)
                 Code.WriteLine(i);
         }
-
-
-        // public string ZippedContentTemporaryFile { get; set; } = "__dockerfile_content__.zip";
+ 
 
         public DockerfileScriptBuilder Code { get; set; }
 

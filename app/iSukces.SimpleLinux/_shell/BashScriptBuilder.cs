@@ -71,6 +71,15 @@ namespace iSukces.SimpleLinux
             Open($"if [ {condition.Trim()} ]; then");
         }
 
+        public void OpenIfFileExists(string filename, FileExistsFlag flags=FileExistsFlag.FileExists)
+        {
+            var cond = (flags & FileExistsFlag.DirectoryExists) != 0 ? "-d " : "-f ";
+            cond += filename;
+            if ((flags & FileExistsFlag.Inverse) != 0)
+                cond = "! " + cond;
+            OpenIf(cond);
+        }
+
         public void StartFile()
         {
             WriteLine("#!/bin/bash");
@@ -102,5 +111,16 @@ namespace iSukces.SimpleLinux
         {
             WriteLine(x.GetCode());
         }
+    }
+
+    [Flags]
+    public enum FileExistsFlag
+    {
+        FileExists = 0,
+        DirectoryExists = 1,
+        Inverse = 2,
+        
+        FileDoesntExist = FileExists | Inverse,
+        DirectoryDoesntExist = DirectoryExists | Inverse,
     }
 }

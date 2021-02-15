@@ -31,7 +31,16 @@ namespace iSukces.SimpleLinux
 
         public LinuxDir AppendDir(string dirName)
         {
+            if (string.IsNullOrEmpty(dirName))
+                return this;
             return this + new LinuxDir(dirName);
         }
+
+        public LinuxFile MakeFile(string shortName)
+        {
+            return this + new LinuxFile(shortName);
+        }
+
+        public static LinuxDir CurrentDir => new LinuxDir("./");
     }
 }

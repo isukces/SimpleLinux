@@ -110,5 +110,15 @@ namespace iSukces.SimpleLinux
         {
             get { return FullName.Split('/').Last(); }
         }
+
+        public string MakeAbsolutePwd()
+        {
+            var n = FullName;
+            if (this.IsAbsolute)
+                return n;
+            if (n.StartsWith("./"))
+                return "`pwd`" + n.Substring(1);
+            throw new NotSupportedException();
+        }
     }
 }
